@@ -41,13 +41,10 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     email       = models.EmailField(max_length=255, unique=True)
-    # full_name   = models.CharField(max_length=255, blank=True, null=True)
     active      = models.BooleanField(default=True) # can login 
     staff       = models.BooleanField(default=False) # staff user non superuser
     admin       = models.BooleanField(default=False) # superuser 
     timestamp   = models.DateTimeField(auto_now_add=True)
-    # confirm     = models.BooleanField(default=False)
-    # confirmed_date     = models.DateTimeField(default=False)
 
     USERNAME_FIELD = 'email' #username
     # USERNAME_FIELD and password are required by default
@@ -117,7 +114,7 @@ class Beneficiary(PersonalInfo):
     chronic_health_condition = models.TextField(blank=True, null=True)
     current_medicine = models.CharField(max_length=300)
     allergies = models.CharField(max_length=300)
-    diagonised_with_covid = models.BooleanField()
+    diagonised_with_covid = models.BooleanField(default=False)
     diagonised_further_detail = models.TextField(blank=True, null=True)
     accurate_information = models.BooleanField(default=False)
 

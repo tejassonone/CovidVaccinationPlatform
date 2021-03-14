@@ -7,7 +7,11 @@
     <title>multistep</title>
 </head>
 <body>
-    <form id="regForm" action="">
+    <form id="regForm" method="POST">
+           {% csrf_token %}
+          {% if next_url %}
+          <input type="hidden" name="next" value="{{next_url}}">
+          {% endif %}
 
         <h1>Register:</h1>
         
@@ -15,8 +19,10 @@
         <div class="tab">Name:
           <p>{{form.email.label}}</p>
           <p>{{form.email}}</p>
-          <p>{{form.password.label}}</p>
-          <p>{{form.password}}</p>
+          <p>{{form.password1.label}}</p>
+          <p>{{form.password1}}</p>
+          <p>{{form.password2.label}}</p>
+          <p>{{form.password2}}</p>
         </div>
         
         <div class="tab">Personal Info:
