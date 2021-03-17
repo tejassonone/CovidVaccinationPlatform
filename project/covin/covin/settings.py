@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'vaccine_centre',
     'accounts',
     'crispy_forms',
+    'appointment',
 ]
 
 MIDDLEWARE = [

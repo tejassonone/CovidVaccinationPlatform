@@ -1,0 +1,297 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+    <!-- semantic UI -->
+    <link rel="stylesheet" type='text/css'
+        href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+
+    <title>Search</title>
+</head>
+
+<body>
+    <form  method="GET" class="mt-5" id="myForm">
+        {% csrf_token %}
+        <div id="alert-box"></div>
+        <div class="ui selection dropdown" id="states">
+            <input type="hidden" name="state">
+            <i class="dropdown icon"></i>
+            <div class="default text" id="state-text"> Choose a state</div>
+            <div class="menu" id="state-data-box">
+
+            </div>
+        </div>
+
+        <div class="ui selection dropdown" id="districts">
+            <input type="hidden" name="district">
+            <i class="dropdown icon"></i>
+            <div class="default text" id="district-text">Choose a district</div>
+            <div class="menu" id="districts-data-box">
+
+            </div>
+        </div>
+
+        <div class="ui selection dropdown" id="blocks">
+            <input type="hidden" name="block">
+            <i class="dropdown icon"></i>
+            <div class="default text" id="block-text">Choose a block</div>
+            <div class="menu" id="blocks-data-box">
+
+            </div>
+        </div>
+
+        <div class="ui selection dropdown" id="pincodes">
+            <input type="hidden" name="pincode">
+            <i class="dropdown icon"></i>
+            <div class="default text" id="pincode-text">Choose a pincode</div>
+            <div class="menu" id="pincodes-data-box">
+
+            </div>
+        </div>
+
+        <div id="btn-box" class="mt-5">
+            <button type="submit" class="ui primary button">Search</button>
+        </div>
+    </form>
+
+
+    <table class="ui grey table non-visible" id="my-table">
+        <thead>
+          <tr><th>Centre ID</th>
+          <th>Centre Name</th>
+          <th>block</th>
+          <th></th>
+        </tr></thead>
+         <tbody id="table-data">
+        </tbody>
+      </table>
+</body>
+
+</html>
+
+
+<style>
+    .mt-5 {
+        margin-top: 5px !important;
+    }
+
+    .non-visible {
+        display: none;
+    }
+</style>
+
+
+<script type="text/javascript">
+    $('.ui.dropdown').dropdown({
+        forceSelection: false
+    });
+
+
+
+
+    const stateDataBox = document.getElementById('state-data-box')
+    const stateInput = document.getElementById('states')
+    const districtDataBox = document.getElementById('districts-data-box')
+    const districtInput = document.getElementById('districts')
+    const blockDataBox = document.getElementById('blocks-data-box')
+    const blockInput = document.getElementById('blocks')
+    const pincodeDataBox = document.getElementById('pincodes-data-box')
+
+
+    const pincodeText = document.getElementById('pincode-text')
+    const blockText = document.getElementById('block-text')
+    const districtText = document.getElementById('district-text')
+    const stateText = document.getElementById('state-text')
+
+    const csrf = document.getElementsByName('csrfmiddlewaretoken')
+
+    const myForm = document.getElementById('myForm')
+    const alertBox = document.getElementById('alert-box')
+    const tableData = document.getElementById('table-data')
+
+    const myTable = document.getElementById('my-table')
+
+
+
+
+
+
+    $.ajax({
+        type: 'GET',
+        url: '/appointment/state-json/',
+        success: function (response) {
+            var statesData = response.data
+            statesData.map(items => {
+                const option = document.createElement('div')
+                option.textContent = items.state_name
+                option.setAttribute('class', 'item')
+                option.setAttribute('data-value', items.state_name)
+                stateDataBox.appendChild(option)
+            })
+        },
+        error: function (error) {
+            console.log(error)
+        }
+    })
+
+    stateInput.addEventListener('change', e => {
+        console.log(e.target.value)
+        const selectedState = e.target.value
+
+        districtDataBox.innerHTML = ""
+        districtText.textContent = "Choose a district"
+        districtText.classList.add("default")
+
+        $.ajax({
+            type: 'GET',
+            url: `/appointment/district-json/${selectedState}/`,
+            success: function (response) {
+                console.log(response)
+                var districtData = response.data
+                districtData.map(items => {
+                    const option = document.createElement('div')
+                    option.textContent = items.district_name
+                    console.log('item', items.district_name)
+                    option.setAttribute('class', 'item')
+                    option.setAttribute('data-value', items.district_name)
+                    districtDataBox.appendChild(option)
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    })
+
+
+
+
+    districtInput.addEventListener('change', e => {
+        console.log(e.target.value)
+        const selectedState = stateText.textContent
+        const selectedDistrict = e.target.value
+
+        blockDataBox.innerHTML = ""
+        blockText.textContent = "Choose a block"
+        blockText.classList.add("default")
+
+        $.ajax({
+            type: 'GET',
+            url: `/appointment/block-json/${selectedState}/${selectedDistrict}/`,
+            success: function (response) {
+                console.log(response)
+                var blockData = response.data
+                blockData.map(items => {
+                    const option = document.createElement('div')
+                    option.textContent = items.block_name
+                    console.log('item', items.block_name)
+                    option.setAttribute('class', 'item')
+                    option.setAttribute('data-value', items.block_name)
+                    blockDataBox.appendChild(option)
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    })
+
+
+
+
+    blockInput.addEventListener('change', e => {
+        console.log(e.target.value)
+        const selectedState = stateText.textContent
+        const selectedDistrict = districtText.textContent
+        const selectedBlock = e.target.value
+
+        pincodeDataBox.innerHTML = ""
+        pincodeText.textContent = "Choose a pincode"
+        pincodeText.classList.add("default")
+
+        $.ajax({
+            type: 'GET',
+            url: `/appointment/block-json/${selectedState}/${selectedDistrict}/${selectedBlock}/`,
+            success: function (response) {
+                console.log(response)
+                var pincodeData = response.data
+                pincodeData.map(items => {
+                    const option = document.createElement('div')
+                    option.textContent = items.pincode
+                    console.log('item', items.pincode)
+                    option.setAttribute('class', 'item')
+                    option.setAttribute('data-value', items.pincode)
+                    pincodeDataBox.appendChild(option)
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        })
+    })
+
+
+    myForm.addEventListener('submit', e => {
+        e.preventDefault()
+        console.log("submitted")
+
+
+        $.ajax({
+            type: 'GET',
+            url: '/appointment/search/',
+            data : {
+                'csrfmiddlewaretoken' : csrf[0].value,
+                'state_name' : stateText.textContent,
+                'district_name' : districtText.textContent,
+                'block_name' : blockText.textContent,
+                'pincode' : pincodeText.textContent,
+
+            },
+            success: function (response) {
+                console.log(response)
+                myTable.classList.remove('non-visible')
+                var centreData = response.data
+                centreData.map(items => {
+                    var row =   `<tr>
+                                 <td>${items.centre_id}</td>
+                                 <td>${items.centre_name}</td>
+                                 <td>${items.block_name}</td>
+                                 <td><button class="btn btn-info py-1">view</button></td>
+                                 </tr>`
+
+                    tableData.innerHTML += row
+                })
+                                    
+                                    },
+            error: function (error) {
+                console.log(error)
+                alertBox.innerHTML = `<div class="ui negative message">
+                                      <i class="close icon"></i>
+                                      <div class="header">Ops</div>
+                                      <p>Something went wrong</p>
+                                      </div>`
+            }
+        })
+    })
+
+
+
+
+
+</script>
+
+
+
+{% endblock %}

@@ -1,3 +1,7 @@
+
+{% extends "base.html" %}
+{% block content %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,8 +11,8 @@
     <title>Profile page</title>
 </head>
 <body>
-    <h1>Profile page</h1>
-    <table border="2px">
+    <h2>Account Details</h2>
+    <table class="table">
         <th>ID</th>
         <th>Email</th>
         <th>First Name</th>
@@ -31,8 +35,15 @@
         </tr>
     </table>
 
+    <div class="btn-group mt-3">
+        <small class="text-muted">
+            <button class="btn btn-info"><a class="ml-2" href="{% url 'appointment' %}">Appointment</a></button>
+        </small>
+    </div>
+
     
 </body>
 </html>
 
 
+{% endblock %}

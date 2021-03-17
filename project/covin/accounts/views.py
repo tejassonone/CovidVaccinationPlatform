@@ -52,7 +52,6 @@ def login_view(request):
 
 def home(request):
     username = request.user
-    print("USERNAME",username)
     qs = Beneficiary.objects.get(email=username)
     print(qs)
     context ={
