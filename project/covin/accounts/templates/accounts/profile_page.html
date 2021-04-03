@@ -11,35 +11,45 @@
     <title>Profile page</title>
 </head>
 <body>
-    <h2>Account Details</h2>
-    <table class="table">
-        <th>ID</th>
-        <th>Email</th>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Year of Birth</th>
-        <th>Gender</th>
-        <th>Mobile No</th>
-        <th>Dose 1 Status</th>
-        <th>Dose 2 Status</th>
-        <tr>
-            <td>{{user.id}}</td>
-            <td>{{user.email}}</td>
-            <td>{{user.first_name}}</td>
-            <td>{{user.last_name}}</td>
-            <td>{{user.year_of_birth}}</td>
-            <td>{{user.gender}}</td>
-            <td>{{user.mobile_no}}</td>
-            <td>{{user.dose1_status}}</td>
-            <td>{{user.dose2_status}}</td>
-        </tr>
-    </table>
 
-    <div class="btn-group mt-3">
-        <small class="text-muted">
-            <button class="btn btn-info"><a class="ml-2" href="{% url 'appointment' %}">Appointment</a></button>
-        </small>
+
+
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card card-body">
+                <h5>Personal Information</h5>
+                <hr>
+                <p>Beneficiary ID : {{user.id}}</p>
+                <p>Email : {{user.email}}</p>
+                <p>Phone No : {{user.mobile_no}}</p>
+                <p>Name : {{user.first_name}} {{user.last_name}}</p>
+                <p>Year of birth : {{user.year_of_birth}}</p>
+            </div>
+
+            <div class="card card-body mt-3">
+                <h5>Vaccine Dose Information</h5>
+                <hr>
+                <p>Dose1 status : {{user.dose1_status}}</p>
+                <p>Dose2 status : {{user.dose2_status}}</p>
+            </div>
+        </div>
+    
+        <div class="col-md-5">
+            <div class="card card-body">
+                <h5>Beneficiary</h5>
+                <hr>
+                <a class="btn btn-outline-info btn-sm btn-block mb-3" href="">Update Profile</a>
+                <a class="btn btn-outline-info btn-sm btn-block mb-3" href="">Update Health Condition</a>
+                <a class="btn btn-outline-info btn-sm btn-block mb-3" href="">View status</a>
+                <a class="btn btn-outline-info btn-sm btn-block mb-3" href="">Notification</a>
+                <a class="btn btn-outline-info btn-sm btn-block mb-3" href="">Gravience</a>
+                <a class="btn btn-outline-info btn-sm btn-block mb-3" href="{% url 'filter_centre' %}">Book Appointment</a>
+                
+            </div>
+        </div>
     </div>
+</div>
 
     
 </body>

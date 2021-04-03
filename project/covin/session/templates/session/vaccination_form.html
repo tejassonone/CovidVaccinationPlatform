@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+
+
+<div class="card">
+  <table class="table table-borderless">
+    <thead>
+      <tr>
+        <th scope="col" colspan="4">First Name</th>
+        <th scope="col">Last Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="4">{{qs.first_name}}</td>
+        <td>{{qs.last_name}}</td>
+      </tr>
+    </tbody>
+    <thead>
+      <tr>
+        <th scope="col" colspan="4">Beneficiary ID</th>
+        <th scope="col">Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td colspan="4">{{qs.id}}</td>
+        <td>{{qs.email}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+<div class="container">
+    <div class="row">
+      <div class="col-12">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th scope="col" colspan="5">Vaccination Officer 1</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="4">Records Verification</td>
+              <td>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck1" checked>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <tr>
+                <th scope="col" colspan="5">Vaccination Officer 2</th>
+              </tr>
+              <td colspan="4">Creadiantials entered in co-win portal</td>
+              <td>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck2">
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <tr>
+                <th scope="col" colspan="5">Vaccinator</th>
+              </tr>
+              <td colspan="3">Vaccination time</td>
+              <td><input type="text" placeholder="vaccination time(min)"></td>
+              <td>
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="customCheck3">
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <tr>
+                <th scope="col" colspan="5">Vaccination Officer 3</th>
+              </tr>
+                <td colspan="4">Completion of 30min observation period</td>
+                <td>
+                  <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="customCheck2">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <tr>
+                  <th scope="col" colspan="5">Vaccination Officer 4</th>
+                </tr>
+                <td colspan="3">Exit time</td>
+                <td><input type="time" name="" id="" placeholder="exit time"></td>
+                <td>
+                  <div class="custom-control custom-checkbox">
+                      <input type="checkbox" class="custom-control-input" id="customCheck2">
+                  </div>
+                </td>
+              </tr>
+          </tbody>
+        </table>
+        <form action="" method="POST">
+          {% csrf_token %}
+          <div style="display: none;">
+          {{form.email}}
+          {{form.first_name}}
+          <select name="dose1_status" id="">
+              <option value="Vaccinated">Vaccinated</option>
+          </select>
+        </div>
+          <button type="submit">Save</button>
+      </form>
+      </div>
+    </div>
+  </div>
+
+
+<style>
+.container {
+  padding: 2rem 0rem;
+}
+
+h4 {
+  margin: 2rem 0rem 1rem;
+}
+
+.table-image {
+  td, th {
+    vertical-align: middle;
+  }
+}
+</style>
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+{% endblock %}

@@ -7,12 +7,14 @@
 <div class="content-section">
     <form method="POST">
         {% csrf_token %}
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Register </legend>
-            {{ form | crispy}}
+        <legend class="border-bottom mb-4">Register </legend>
+
+        <fieldset>
+ 
+        {{form | crispy}}
         </fieldset>
         <div class="mt-3 form-group">
-            <button class="btn btn-outline-info" type="">Sign Up</button>
+            <button class="btn btn-outline-info" type="submit">Sign Up</button>
         </div> 
         <div class="border-top pt-3">
             <small class="text-muted">
@@ -26,6 +28,18 @@
 <style>
 small ul{
     display: none;
+}
+
+.form-outer{
+    display: flex;
+    width: 400%;
+    overflow: hidden;
+}
+
+.form-outer .field{
+    height: 50px;
+    width: 300px;
+    margin: 45px 0;
 }
 </style>
 

@@ -90,3 +90,7 @@ class BeneficiaryInfoForm(forms.ModelForm):
         model = Beneficiary
         fields = ['email', 'password', 'first_name', 'last_name', 'year_of_birth', 'gender', 'mobile_no', 'dose1_status', 'dose2_status',
          'chronic_health_condition', 'current_medicine', 'allergies', 'diagonised_with_covid', 'diagonised_further_detail', 'accurate_information']
+
+
+
+

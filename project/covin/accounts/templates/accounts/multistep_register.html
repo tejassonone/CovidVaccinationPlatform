@@ -1,67 +1,133 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>multistep</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
     <form id="regForm" method="POST">
            {% csrf_token %}
           {% if next_url %}
           <input type="hidden" name="next" value="{{next_url}}">
           {% endif %}
 
-        <h1>Register:</h1>
+          
         
         <!-- One "tab" for each step in the form: -->
-        <div class="tab">Name:
-          <p>{{form.email.label}}</p>
-          <p>{{form.email}}</p>
-          <p>{{form.password1.label}}</p>
-          <p>{{form.password1}}</p>
-          <p>{{form.password2.label}}</p>
-          <p>{{form.password2}}</p>
+        <div class="tab py-5 card card-body">
+          <legend class="border-bottom mb-4">Register</legend>
+          <div id="div_id_email" class="form-group">
+            <label for="id_email" class=" requiredField">
+              Email<span class="asteriskField">*</span> </label>
+            <div class=""> <input type="email" name="email" maxlength="255" class="emailinput form-control" required
+                id="id_email"> </div>
+          </div>
+          <div id="div_id_password1" class="form-group"> <label for="id_password1" class=" requiredField">
+              Password<span class="asteriskField">*</span> </label>
+            <div class=""> <input type="password" name="password1" class="textinput textInput form-control" required
+                id="id_password1"> </div>
+          </div>
+          <div id="div_id_password2" class="form-group"> <label for="id_password2" class=" requiredField">
+              Password confirmation<span class="asteriskField">*</span> </label>
+            <div class=""> <input type="password" name="password2" class="textinput textInput form-control" required
+                id="id_password2"> </div>
+          </div>
         </div>
         
-        <div class="tab">Personal Info:
-            <p>{{form.first_name.label}}</p>
-            <p>{{form.first_name}}</p>
-            <p>{{form.last_name.label}}</p>
-            <p>{{form.last_name}}</p>
-            <p>{{form.year_of_birth.label}}</p>
-            <p>{{form.year_of_birth}}</p>
-            <p>{{form.gender.label}}</p>
-            <p>{{form.gender}}</p>
-            <p>{{form.mobile_no.label}}</p>
-            <p>{{form.mobile_no}}</p>
-            <p>{{form.dose1_status.label}}</p>
-            <p>{{form.dose1_status}}</p>
-            <p>{{form.dose2_status.label}}</p>
-            <p>{{form.dose2_status}}</p>
+        <div class="tab py-5 card card-body">
+          <legend class="border-bottom mb-4">Personal Info</legend>
+          <div id="div_id_first_name" class="form-group"> <label for="id_first_name" class=" requiredField">
+              First name<span class="asteriskField">*</span> </label>
+            <div class=""> <input type="text" name="first_name" maxlength="200" class="textinput textInput form-control"
+                required id="id_first_name"> </div>
+          </div>
+          <div id="div_id_last_name" class="form-group"> <label for="id_last_name" class=" requiredField">
+              Last name<span class="asteriskField">*</span> </label>
+            <div class=""> <input type="text" name="last_name" maxlength="200" class="textinput textInput form-control" required
+                id="id_last_name"> </div>
+          </div>
+          <div id="div_id_year_of_birth" class="form-group"> <label for="id_year_of_birth" class=" requiredField">
+              Year of birth<span class="asteriskField">*</span> </label>
+            <div class=""> <input type="text" name="year_of_birth" maxlength="20" class="textinput textInput form-control"
+                required id="id_year_of_birth"> </div>
+          </div>
+          <div id="div_id_gender" class="form-group"> <label for="id_gender" class=" requiredField">
+              Gender<span class="asteriskField">*</span> </label>
+            <div class=""> <select name="gender" class="select form-control" required id="id_gender">
+                <option value="" selected>---------</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+        
+              </select> </div>
+          </div>
+          <div id="div_id_mobile_no" class="form-group"> <label for="id_mobile_no" class=" requiredField">
+              Mobile no<span class="asteriskField">*</span> </label>
+            <div class=""> <input type="text" name="mobile_no" maxlength="200" class="textinput textInput form-control" required
+                id="id_mobile_no"> </div>
+          </div>
+          <div id="div_id_dose1_status" class="form-group"> <label for="id_dose1_status" class=" requiredField">
+              Dose1 status<span class="asteriskField">*</span> </label>
+            <div class=""> <select name="dose1_status" class="select form-control" required id="id_dose1_status">
+                <option value="" selected>---------</option>
+                <option value="Sheduled">Sheduled</option>
+                <option value="Not-Sheduled">Not-Sheduled</option>
+                <option value="Vaccinated">Vaccinated</option>
+        
+              </select> </div>
+          </div>
+          <div id="div_id_dose2_status" class="form-group"> <label for="id_dose2_status" class=" requiredField">
+              Dose2 status<span class="asteriskField">*</span> </label>
+            <div class=""> <select name="dose2_status" class="select form-control" required id="id_dose2_status">
+                <option value="" selected>---------</option>
+                <option value="Sheduled">Sheduled</option>
+                <option value="Not-Sheduled">Not-Sheduled</option>
+                <option value="Vaccinated">Vaccinated</option>
+              </select> </div>
+          </div>
         </div>
         
-        <div class="tab">Health Condition:
-          <p>{{form.chronic_health_condition.label}}</p>
-          <p>{{form.chronic_health_condition}}</p>
-          <p>{{form.current_medicine.label}}</p>
-          <p>{{form.current_medicine}}</p>
-          <p>{{form.allergies.label}}</p>
-          <p>{{form.allergies}}</p>
-          <p>{{form.diagonised_with_covid.label}}</p>
-          <p>{{form.diagonised_with_covid}}</p>
-          <p>{{form.diagonised_further_detail.label}}</p>
-          <p>{{form.diagonised_further_detail}}</p>
-          <p>{{form.accurate_information.label}}</p>
-          <p>{{form.accurate_information}}</p>
+        <div class="tab py-5 card card-body">
+          <legend class="border-bottom mb-4">Health Condition</legend>
+          <div id="div_id_chronic_health_condition" class="form-group"> <label for="id_chronic_health_condition" class="">
+              Chronic health condition
+            </label>
+            <div class=""> <textarea name="chronic_health_condition" cols="10" rows="4" class="textarea form-control"
+                id="id_chronic_health_condition">
+        </textarea> </div>
+          </div>
+          <div id="div_id_current_medicine" class="form-group"> <label for="id_current_medicine" class=" requiredField">
+              Current medicine<span class="asteriskField">*</span> </label>
+            <div class=""> <input type="text" name="current_medicine" maxlength="300" class="textinput textInput form-control"
+                required id="id_current_medicine"> </div>
+          </div>
+          <div id="div_id_allergies" class="form-group"> <label for="id_allergies" class=" requiredField">
+              Allergies<span class="asteriskField">*</span> </label>
+            <div class=""> <input type="text" name="allergies" maxlength="300" class="textinput textInput form-control" required
+                id="id_allergies"> </div>
+          </div>
+          <div class="form-group">
+            <div id="div_id_diagonised_with_covid" class="form-check"> <input type="checkbox" name="diagonised_with_covid"
+                class="checkboxinput form-check-input" id="id_diagonised_with_covid"> <label for="id_diagonised_with_covid"
+                class="form-check-label">
+                Diagonised with covid
+              </label> </div>
+          </div>
+          <div id="div_id_diagonised_further_detail" class="form-group"> <label for="id_diagonised_further_detail" class="">
+              Diagonised further detail
+            </label>
+            <div class=""> <textarea name="diagonised_further_detail" cols="10" rows="3" class="textarea form-control"
+                id="id_diagonised_further_detail">
+        </textarea> </div>
+          </div>
+          <div class="form-group">
+            <div id="div_id_accurate_information" class="form-check"> <input type="checkbox" name="accurate_information"
+                class="checkboxinput form-check-input" id="id_accurate_information"> <label for="id_accurate_information"
+                class="form-check-label">
+                Accurate information
+              </label> </div>
+          </div>
         </div>
-        
         
         <div style="overflow:auto;">
           <div style="float:right;">
-            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+            <button class="btn btn-outline-info mt-3" type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+            <button class="btn btn-outline-info mt-3" type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
           </div>
         </div>
         
@@ -73,27 +139,26 @@
         </div>
         
         </form>
-</body>
-</html>
+
 
 
 <style>
 /* Style the form */
 #regForm {
     background-color: #ffffff;
-    margin: 100px auto;
+    margin: 30px auto;
     padding: 40px;
     width: 70%;
-    min-width: 300px;
+    min-width: 400px;
   }
   
   /* Style the input fields */
-  input {
+  custom_input {
     padding: 10px;
     width: 100%;
     font-size: 17px;
     font-family: Raleway;
-    border: 1px solid #aaaaaa;
+    border: 1px solid #797979;
   }
   
   /* Mark input boxes that gets an error on validation: */
@@ -205,3 +270,13 @@ function fixStepIndicator(n) {
   x[n].className += " active";
 }
     </script>
+
+
+
+
+<style>
+
+</style>
+
+
+{% endblock %}

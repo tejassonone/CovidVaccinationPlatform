@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container section-b">
+
+    <div class="row">
+        <div class="col-md-10">
+            <h2>Session Status</h2>
+        </div>
+        <div class="col-md-2">
+
+            <div class="date" id="current_date">01-01-2021</div>
+        </div>
+    </div>
+
+    <hr>
+    <div class="row">
+        <div class="col">
+            <div class="col-md">
+                <div class="card text-center text-white  mb-3" id="total-orders">
+                      <div class="card-header">
+                          <h5 class="card-title">Total Beneficiaries</h5>
+                      </div>
+                      <div class="card-body">
+                        <h3 class="card-title">{{total_appointment}}</h3>
+                      </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col">
+            <div class="col-md">
+                <div class="card text-center text-white  mb-3" id="orders-delivered">
+                      <div class="card-header">
+                          <h5 class="card-title">Beneficiaries Vaccinated</h5>
+                      </div>
+                      <div class="card-body">
+                        <h3 class="card-title">{{total_vaccinated}}</h3>
+                      </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="col">
+            <div class="col-md">
+                <div class="card text-center text-white  mb-3" id="orders-pending">
+                      <div class="card-header">
+                          <h5 class="card-title">Beneficiaries Pending</h5>
+                      </div>
+                      <div class="card-body">
+                        <h3 class="card-title">{{total_sheduled}}</h3>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card card-body">
+                <h5 class="card-title">BeneFiciaries In Process</h5>
+                <hr>
+                <div class="scroll">
+                <table class="table table-sm">
+                    <thead>
+                      <tr class="table-primary">
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Appointment Date</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-body" id="myTable1">
+                    {% for row in sheduled %}
+                        <tr>
+                            <td>{{row.appointment_id}}</td>
+                            <td>{{row.beneficiary.first_name}}</td>
+                            <td>{{row.session_date}}</td>
+                            <td><a class="btn btn-info" href="{% url 'vaccination_form' row.appointment_id %}">process</a></td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card card-body">
+                <h5 class="card-title">BeneFiciaries Vaccinated</h5>
+                <hr>
+                <div class="scroll">
+                <table class="table table-sm">
+                    <thead>
+                      <tr class="table-primary">
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="myTable2">
+                        {% for row in vaccinated %}
+                        <tr>
+                            <td>{{row.appointment_id}}</td>
+                            <td>{{row.beneficiary.first_name}}</td>
+                            <td>Completed</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <style>
+
+        
+
+        .style-content{
+            margin-right: 500px;
+            width: 100vw;
+            color: #fff;
+            background: rgb(36, 31, 31);
+        }
+        
+        
+        
+        .date{
+             font-size: 2rem;
+         }
+        
+        .scroll{
+            height: 350px;
+            overflow: scroll;
+        }
+        
+        
+        
+        
+        
+                #total-orders{
+                background-color: #30bbe6;
+            }
+        
+        
+            #orders-delivered{
+                background-color: #4b9ed4;
+            }
+        
+            #orders-pending{
+                background-color: #52a0d4;
+            }
+        </style>
+
+
+<script>
+var curDate = document.getElementById('current_date')
+
+
+var curday = function(sp){
+today = new Date();
+var dd = today.getDate();
+var mm = today.getMonth()+1; 
+var yyyy = today.getFullYear();
+
+if(dd<10) dd='0'+dd;
+if(mm<10) mm='0'+mm;
+return (dd+sp+mm+sp+yyyy);
+};
+console.log(curday('/'));
+console.log(curday('-'));
+
+curDate.innerHTML = curday('-')
+</script>
+{% endblock %}

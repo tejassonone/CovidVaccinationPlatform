@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block content %}
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+
+
+
+
+  <div class="card w-200 mb-4" style="width: 1000px;">
+    <div class="card-body">
+      <h5 class="card-title">{{qs.centre_name}}</h5>
+      <p class="card-text">{{qs.block_name}}, {{qs.district_name}}, {{qs.pincode}}, {{qs.state_name}}</p>
+    </div>
+  </div>
+
+  <div class="card w-200 mb-4" style="width: 1000px;">
+    <div class="card-body">
+
+      <div class="container row">
+        <div class="col-md mb-4">        
+          <h5 class="card-title">Centre ID</h5>
+          <p class="card-text" id="centre_id">{{qs.centre_id}}</p>
+        </div>
+        <div class="col-md mb-4">
+          <h5 class="card-title">Fee Type</h5>
+          <p class="card-text">{{qs.fee_type}}</p>
+        </div>
+      </div>
+
+
+      <div class="container row">
+        <div class="col-md mb-4">        
+          <h5 class="card-title"> Timing From</h5>
+          <p class="card-text">{{qs.timing_from}}</p>
+        </div>
+        <div class="col-md mb-4">
+          <h5 class="card-title">Timing To</h5>
+          <p class="card-text">{{qs.timing_to}}</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="card mb-4" style="width: 1000px;height: 80px;">
+    <div class="card-body">
+      <h5 class="card-title text-center">
+        <div class="container row">
+          <p class="col-md">Session ID</p>
+          <p class="col-md">Session Date</p>
+          <p class="col-md">Slot</p>
+          <p class="col-md">Available Capacity</p>
+          <p class="col-md">Action</p>
+        </div>
+      </h5>
+      
+    </div>
+  </div>
+
+  {% for session in sessions %}
+  <div class="card w-200 mb-4" style="width: 1000px;">
+    <div class="card-body">
+      <div class="card-text text-center">
+        <div class="container row">
+          <p class="col-md" id="session_id">{{session.session_id}}</p>
+          <p class="col-md">{{session.session_date}}</p>
+          <p class="col-md">{{session.slot}}</p>
+          <p class="col-md">{{session.avalable_capacity}}</p>
+          <button class="btn btn-primary col-md" onclick=handleBookActionBtn({{session.session_id}})>Book</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+
+
+
+<script>
+
+
+
+
+
+
+
+function handleBookActionBtn(session_id) {
+  console.log(session_id)
+  $.ajax({
+            type: 'GET',
+            url: '/appointment/book_appointment_view/',
+            data : {
+                'session_id' : session_id,
+                'action' : 'book'
+
+            },
+            success: function (response) {
+                console.log(response)                                    
+                                    },
+
+            error: function (error) {
+                console.log(error)
+            }
+        })
+}
+
+
+</script>
+
+{% endblock %}

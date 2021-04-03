@@ -3,10 +3,6 @@
 
 
 
-
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -71,7 +67,6 @@
         <thead>
           <tr><th>Centre ID</th>
           <th>Centre Name</th>
-          <th>block</th>
           <th></th>
         </tr></thead>
          <tbody id="table-data">
@@ -79,7 +74,6 @@
       </table>
 </body>
 
-</html>
 
 
 <style>
@@ -116,6 +110,7 @@
     const stateText = document.getElementById('state-text')
 
     const csrf = document.getElementsByName('csrfmiddlewaretoken')
+    console.log(csrf)
 
     const myForm = document.getElementById('myForm')
     const alertBox = document.getElementById('alert-box')
@@ -243,6 +238,13 @@
     })
 
 
+    function ViewBtn(id){
+        window.location = '/appointment/book_appointment/'+id;
+    }
+  
+
+
+
     myForm.addEventListener('submit', e => {
         e.preventDefault()
         console.log("submitted")
@@ -264,15 +266,16 @@
                 myTable.classList.remove('non-visible')
                 var centreData = response.data
                 centreData.map(items => {
-                    var row =   `<tr>
-                                 <td>${items.centre_id}</td>
-                                 <td>${items.centre_name}</td>
-                                 <td>${items.block_name}</td>
-                                 <td><button class="btn btn-info py-1">view</button></td>
-                                 </tr>`
+                    console.log("row",items)
+                    var row = "<tr><td>"+items.centre_id+"</td><td>"
+                              +items.centre_name+
+                            "</td><td><button id='view_btn' onclick=ViewBtn("+items.centre_id+")>view</button></td></tr>"
+                                
 
                     tableData.innerHTML += row
                 })
+
+                
                                     
                                     },
             error: function (error) {
@@ -287,6 +290,10 @@
     })
 
 
+
+
+
+    
 
 
 
