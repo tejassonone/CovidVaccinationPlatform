@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import RegisterForm, LoginForm
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.utils.http import is_safe_url
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
@@ -66,3 +66,12 @@ def register1(request):
     form=RegisterForm()
     context = {'form':form}
     return render(request, 'accounts/register.html', context)
+
+
+def is_email_already_exist(request, *args, **kwargs):
+    email = request.GET.get('email')
+    if Beneficiary.objects.filter(email=email).exists():
+        user_exist=True
+    else:
+        user_exist=False
+    return JsonResponse({'userExist':user_exist})

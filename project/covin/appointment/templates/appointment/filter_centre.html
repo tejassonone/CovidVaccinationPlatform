@@ -26,7 +26,6 @@
             <i class="dropdown icon"></i>
             <div class="default text" id="state-text"> Choose a state</div>
             <div class="menu" id="state-data-box">
-
             </div>
         </div>
 
@@ -35,7 +34,6 @@
             <i class="dropdown icon"></i>
             <div class="default text" id="district-text">Choose a district</div>
             <div class="menu" id="districts-data-box">
-
             </div>
         </div>
 
@@ -67,6 +65,7 @@
         <thead>
           <tr><th>Centre ID</th>
           <th>Centre Name</th>
+          <th>Fee type</th>
           <th></th>
         </tr></thead>
          <tbody id="table-data">
@@ -268,8 +267,9 @@
                 centreData.map(items => {
                     console.log("row",items)
                     var row = "<tr><td>"+items.centre_id+"</td><td>"
-                              +items.centre_name+
-                            "</td><td><button id='view_btn' onclick=ViewBtn("+items.centre_id+")>view</button></td></tr>"
+                              +items.centre_name+"</td><td>"
+                              +items.fee_type+
+                            "</td><td><button class='btn btn-outline-info' id='view_btn' onclick=ViewBtn("+items.centre_id+")>view</button></td></tr>"
                                 
 
                     tableData.innerHTML += row
