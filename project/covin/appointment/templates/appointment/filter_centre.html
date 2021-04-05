@@ -3,74 +3,73 @@
 
 
 
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
-    <!-- semantic UI -->
-    <link rel="stylesheet" type='text/css'
-        href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.14/semantic.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
 
     <title>Search</title>
 </head>
 
 <body>
+
+<div class="container card card-body">
     <form  method="GET" class="mt-5" id="myForm">
         {% csrf_token %}
+
         <div id="alert-box"></div>
-        <div class="ui selection dropdown" id="states">
-            <input type="hidden" name="state">
-            <i class="dropdown icon"></i>
-            <div class="default text" id="state-text"> Choose a state</div>
-            <div class="menu" id="state-data-box">
+        <div class="row">
+            <div class="col-md custom_select">
+                <select name="state" id="state" class="form-control input-lg">
+                    <option value="">Select state</option>
+                </select>
+            </div>
+
+            <div class="col-md custom_select">
+                <select name="district" id="district" class="form-control input-lg">
+                    <option value="">Select district</option>
+                </select>
+            </div>
+
+            <div class="col-md custom_select">
+                <select name="block" id="block" class="form-control input-lg">
+                    <option value="">Select block</option>
+                </select>
+            </div>
+
+            <div class="col-md custom_select">
+                <select name="pincode" id="pincode" class="form-control input-lg">
+                    <option value="">Select pincode</option>
+                </select>
             </div>
         </div>
 
-        <div class="ui selection dropdown" id="districts">
-            <input type="hidden" name="district">
-            <i class="dropdown icon"></i>
-            <div class="default text" id="district-text">Choose a district</div>
-            <div class="menu" id="districts-data-box">
-            </div>
+        <div id="" class="mt-3">
+            <button type="submit" class="btn btn-outline-info">Search</button>
         </div>
-
-        <div class="ui selection dropdown" id="blocks">
-            <input type="hidden" name="block">
-            <i class="dropdown icon"></i>
-            <div class="default text" id="block-text">Choose a block</div>
-            <div class="menu" id="blocks-data-box">
-
-            </div>
-        </div>
-
-        <div class="ui selection dropdown" id="pincodes">
-            <input type="hidden" name="pincode">
-            <i class="dropdown icon"></i>
-            <div class="default text" id="pincode-text">Choose a pincode</div>
-            <div class="menu" id="pincodes-data-box">
-
-            </div>
-        </div>
-
-        <div id="btn-box" class="mt-5">
-            <button type="submit" class="ui primary button">Search</button>
-        </div>
-    </form>
+</form>
+</div>
 
 
-    <table class="ui grey table non-visible" id="my-table">
-        <thead>
-          <tr><th>Centre ID</th>
-          <th>Centre Name</th>
-          <th>Fee type</th>
-          <th></th>
-        </tr></thead>
-         <tbody id="table-data">
-        </tbody>
-      </table>
+
+
+<div class="container">
+        <table class="table table-sm table_content non-visible" id="my-table">
+            <thead>
+              <tr><th scope="col">Centre ID</th>
+              <th scope="col">Centre Name</th>
+              <th scope="col">Fee type</th>
+              <th></th>
+            </tr></thead>
+             <tbody id="table-data">
+            </tbody>
+          </table>
+</div>
+
+
 </body>
 
 
@@ -83,30 +82,51 @@
     .non-visible {
         display: none;
     }
+.table_content{
+    
+  margin-top: 30px;
+
+}
+
+.table_content thead tr{
+  background-color: #27bec9;
+  color: #fff;
+  font-weight: bold;
+}
+
+
+
+.custom_select{
+    position: relative;
+    height: 37px;
+    width: 100%;
+}
+
+
+.custom_select:before{
+    content: "";
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    border: 8px solid;
+    border-color: #d5dbd9 transparent transparent transparent;
+    pointer-events: none;
+}
+
+
+
 </style>
 
 
 <script type="text/javascript">
-    $('.ui.dropdown').dropdown({
-        forceSelection: false
-    });
 
 
 
-
-    const stateDataBox = document.getElementById('state-data-box')
-    const stateInput = document.getElementById('states')
-    const districtDataBox = document.getElementById('districts-data-box')
-    const districtInput = document.getElementById('districts')
-    const blockDataBox = document.getElementById('blocks-data-box')
-    const blockInput = document.getElementById('blocks')
-    const pincodeDataBox = document.getElementById('pincodes-data-box')
+    const stateInput = document.getElementById('state')
+    const districtInput = document.getElementById('district')
+    const blockInput = document.getElementById('block')
 
 
-    const pincodeText = document.getElementById('pincode-text')
-    const blockText = document.getElementById('block-text')
-    const districtText = document.getElementById('district-text')
-    const stateText = document.getElementById('state-text')
 
     const csrf = document.getElementsByName('csrfmiddlewaretoken')
     console.log(csrf)
@@ -120,6 +140,7 @@
 
 
 
+    
 
 
     $.ajax({
@@ -127,13 +148,12 @@
         url: '/appointment/state-json/',
         success: function (response) {
             var statesData = response.data
+            var html_code = '';
+            html_code += '<option value="">Select state</option>';  
             statesData.map(items => {
-                const option = document.createElement('div')
-                option.textContent = items.state_name
-                option.setAttribute('class', 'item')
-                option.setAttribute('data-value', items.state_name)
-                stateDataBox.appendChild(option)
+                html_code += '<option value="'+items.state_name+'">'+items.state_name+'</option>';
             })
+            $('#state').html(html_code);
         },
         error: function (error) {
             console.log(error)
@@ -144,9 +164,10 @@
         console.log(e.target.value)
         const selectedState = e.target.value
 
-        districtDataBox.innerHTML = ""
-        districtText.textContent = "Choose a district"
-        districtText.classList.add("default")
+        $('#district').html('<option value="">Select district</option>');
+        $('#block').html('<option value="">Select block</option>');
+        $('#pincode').html('<option value="">Select pincode</option>');
+
 
         $.ajax({
             type: 'GET',
@@ -154,14 +175,13 @@
             success: function (response) {
                 console.log(response)
                 var districtData = response.data
+
+                var html_code = '';
+                html_code += '<option value="">Select district</option>'; 
                 districtData.map(items => {
-                    const option = document.createElement('div')
-                    option.textContent = items.district_name
-                    console.log('item', items.district_name)
-                    option.setAttribute('class', 'item')
-                    option.setAttribute('data-value', items.district_name)
-                    districtDataBox.appendChild(option)
+                    html_code += '<option value="'+items.district_name+'">'+items.district_name+'</option>';
                 })
+                $('#district').html(html_code);
             },
             error: function (error) {
                 console.log(error)
@@ -173,13 +193,13 @@
 
 
     districtInput.addEventListener('change', e => {
-        console.log(e.target.value)
-        const selectedState = stateText.textContent
+        console.log('district',e.target.value)
+        const selectedState = document.getElementById('state').value
         const selectedDistrict = e.target.value
 
-        blockDataBox.innerHTML = ""
-        blockText.textContent = "Choose a block"
-        blockText.classList.add("default")
+        
+        $('#block').html('<option value="">Select block</option>');
+        $('#pincode').html('<option value="">Select pincode</option>');
 
         $.ajax({
             type: 'GET',
@@ -187,14 +207,12 @@
             success: function (response) {
                 console.log(response)
                 var blockData = response.data
+                var html_code = '';
+                html_code += '<option value="">Select block</option>'; 
                 blockData.map(items => {
-                    const option = document.createElement('div')
-                    option.textContent = items.block_name
-                    console.log('item', items.block_name)
-                    option.setAttribute('class', 'item')
-                    option.setAttribute('data-value', items.block_name)
-                    blockDataBox.appendChild(option)
+                    html_code += '<option value="'+items.block_name+'">'+items.block_name+'</option>';
                 })
+                $('#block').html(html_code);
             },
             error: function (error) {
                 console.log(error)
@@ -207,13 +225,12 @@
 
     blockInput.addEventListener('change', e => {
         console.log(e.target.value)
-        const selectedState = stateText.textContent
-        const selectedDistrict = districtText.textContent
+        const selectedState =  document.getElementById('state').value
+        const selectedDistrict =  document.getElementById('district').value
         const selectedBlock = e.target.value
 
-        pincodeDataBox.innerHTML = ""
-        pincodeText.textContent = "Choose a pincode"
-        pincodeText.classList.add("default")
+        
+        $('#pincode').html('<option value="">Select pincode</option>');
 
         $.ajax({
             type: 'GET',
@@ -221,14 +238,12 @@
             success: function (response) {
                 console.log(response)
                 var pincodeData = response.data
+                var html_code = '';
+                html_code += '<option value="">Select pincode</option>'; 
                 pincodeData.map(items => {
-                    const option = document.createElement('div')
-                    option.textContent = items.pincode
-                    console.log('item', items.pincode)
-                    option.setAttribute('class', 'item')
-                    option.setAttribute('data-value', items.pincode)
-                    pincodeDataBox.appendChild(option)
+                    html_code += '<option value="'+items.pincode+'">'+items.pincode+'</option>';
                 })
+                $('#pincode').html(html_code);
             },
             error: function (error) {
                 console.log(error)
@@ -254,10 +269,10 @@
             url: '/appointment/search/',
             data : {
                 'csrfmiddlewaretoken' : csrf[0].value,
-                'state_name' : stateText.textContent,
-                'district_name' : districtText.textContent,
-                'block_name' : blockText.textContent,
-                'pincode' : pincodeText.textContent,
+                'state_name' : document.getElementById('state').value,
+                'district_name' : document.getElementById('district').value,
+                'block_name' : document.getElementById('block').value,
+                'pincode' : document.getElementById('pincode').value,
 
             },
             success: function (response) {
@@ -280,11 +295,9 @@
                                     },
             error: function (error) {
                 console.log(error)
-                alertBox.innerHTML = `<div class="ui negative message">
-                                      <i class="close icon"></i>
-                                      <div class="header">Ops</div>
-                                      <p>Something went wrong</p>
-                                      </div>`
+                alertBox.innerHTML = `<div class="alert alert-danger" role="alert">
+                                        Something went wrong.. 
+                                       </div>`
             }
         })
     })
