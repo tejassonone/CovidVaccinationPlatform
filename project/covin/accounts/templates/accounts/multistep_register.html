@@ -4,318 +4,426 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
 
+<div class="container register_form_section">
+  <form id="regForm" method="POST">
+    {% csrf_token %}
+    {% if next_url %}
+    <input type="hidden" name="next" value="{{next_url}}">
+    {% endif %}
 
-
-    <form id="regForm" method="POST">
-           {% csrf_token %}
-          {% if next_url %}
-          <input type="hidden" name="next" value="{{next_url}}">
-          {% endif %}
-
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link active_tab1" style="border:1px solid #ccc" id="list_login_details">Login Details</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link inactive_tab1" id="list_personal_details" style="border:1px solid #ccc">Personal Details</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link inactive_tab1" id="list_contact_details" style="border:1px solid #ccc">Contact Details</a>
+      </li>
+    </ul>
+    <div class="tab-content" style="margin-top:16px;">
+      <div class="tab-pane active tab" id="login_details">
+        <div class="card card-body">
+          <legend class="border-bottom mb-4">Login Details</legend>
           
-        
-        <!-- One "tab" for each step in the form: -->
-        <div class="tab py-5 card card-body">
-          <legend class="border-bottom mb-4">Register</legend>
-          <div id="alert-box"></div>
-          <div id="div_id_email" class="form-group">
-            <label for="id_email" class=" requiredField">
-              Email<span class="asteriskField">*</span> </label>
-            <div class=""> <input type="email" name="email" maxlength="255" class="emailinput form-control" required
-                id="id_email"> </div>
-          </div>
-          <div id="div_id_password1" class="form-group"> <label for="id_password1" class=" requiredField">
-              Password<span class="asteriskField">*</span> </label>
-            <div class=""> <input type="password" name="password1" class="textinput textInput form-control" required
-                id="id_password1"> </div>
-          </div>
-          <div id="div_id_password2" class="form-group"> <label for="id_password2" class=" requiredField">
-              Password confirmation<span class="asteriskField">*</span> </label>
-            <div class=""> <input type="password" name="password2" class="textinput textInput form-control" required
-                id="id_password2"> </div>
-          </div>
-        </div>
-        
-        <div class="tab py-5 card card-body">
-          <legend class="border-bottom mb-4">Personal Info</legend>
-          <div id="div_id_first_name" class="form-group"> <label for="id_first_name" class=" requiredField">
-              First name<span class="asteriskField">*</span> </label>
-            <div class=""> <input type="text" name="first_name" maxlength="200" class="textinput textInput form-control"
-                required id="id_first_name"> </div>
-          </div>
-          <div id="div_id_last_name" class="form-group"> <label for="id_last_name" class=" requiredField">
-              Last name<span class="asteriskField">*</span> </label>
-            <div class=""> <input type="text" name="last_name" maxlength="200" class="textinput textInput form-control" required
-                id="id_last_name"> </div>
-          </div>
-          <div id="div_id_year_of_birth" class="form-group"> <label for="id_year_of_birth" class=" requiredField">
-              Year of birth<span class="asteriskField">*</span> </label>
-            <div class=""> <input type="text" name="year_of_birth" maxlength="20" class="textinput textInput form-control"
-                required id="id_year_of_birth"> </div>
-          </div>
-          <div id="div_id_gender" class="form-group"> <label for="id_gender" class=" requiredField">
-              Gender<span class="asteriskField">*</span> </label>
-            <div class=""> <select name="gender" class="select form-control" required id="id_gender">
-                <option value="" selected>---------</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-        
-              </select> </div>
-          </div>
-          <div id="div_id_mobile_no" class="form-group"> <label for="id_mobile_no" class=" requiredField">
-              Mobile no<span class="asteriskField">*</span> </label>
-            <div class=""> <input type="text" name="mobile_no" maxlength="200" class="textinput textInput form-control" required
-                id="id_mobile_no"> </div>
-          </div>
-          <div id="div_id_dose1_status" class="form-group"> <label for="id_dose1_status" class=" requiredField">
-              Dose1 status<span class="asteriskField">*</span> </label>
-            <div class=""> <select name="dose1_status" class="select form-control" required id="id_dose1_status">
-                <option value="" selected>---------</option>
-                <option value="Sheduled">Sheduled</option>
-                <option value="Not-Sheduled">Not-Sheduled</option>
-                <option value="Vaccinated">Vaccinated</option>
-        
-              </select> </div>
-          </div>
-          <div id="div_id_dose2_status" class="form-group"> <label for="id_dose2_status" class=" requiredField">
-              Dose2 status<span class="asteriskField">*</span> </label>
-            <div class=""> <select name="dose2_status" class="select form-control" required id="id_dose2_status">
-                <option value="" selected>---------</option>
-                <option value="Sheduled">Sheduled</option>
-                <option value="Not-Sheduled">Not-Sheduled</option>
-                <option value="Vaccinated">Vaccinated</option>
-              </select> </div>
+            <div id="alert-box"></div>
+
+            <div id="div_id_email" class="form-group">
+              <label for="id_email" class=" requiredField">
+                Email<span class="asteriskField">*</span> </label>
+              <div class=""> <input type="email" name="email" maxlength="255" class="emailinput form-control" required
+                  id="id_email">
+                <span id="error_email" class="text-danger"></span>
+              </div>
+            </div>
+            <div id="div_id_password1" class="form-group"> <label for="id_password1" class=" requiredField">
+                Password<span class="asteriskField">*</span> </label>
+              <div class=""> <input type="password" name="password1" class="textinput textInput form-control" required
+                  id="id_password1">
+                <span id="error_password" class="text-danger"></span>
+              </div>
+            </div>
+            <div id="div_id_password2" class="form-group"> <label for="id_password2" class=" requiredField">
+                Password confirmation<span class="asteriskField">*</span> </label>
+              <div class=""> <input type="password" name="password2" class="textinput textInput form-control" required
+                  id="id_password2">
+                <span id="error_password2" class="text-danger">
+            </div>
+
+            <br />
+            <div align="center">
+              <button type="button" name="btn_login_details" id="btn_login_details"
+                class="next btn btn-outline-info btn-lg">Next</button>
+            </div>
+            <br />
           </div>
         </div>
-        
-        <div class="tab py-5 card card-body">
-          <legend class="border-bottom mb-4">Health Condition</legend>
-          <div id="div_id_chronic_health_condition" class="form-group"> <label for="id_chronic_health_condition" class="">
-              Chronic health condition
-            </label>
-            <div class=""> <textarea name="chronic_health_condition" cols="10" rows="4" class="textarea form-control"
-                id="id_chronic_health_condition">
-        </textarea> </div>
-          </div>
-          <div id="div_id_current_medicine" class="form-group"> <label for="id_current_medicine" class=" requiredField">
-              Current medicine<span class="asteriskField">*</span> </label>
-            <div class=""> <input type="text" name="current_medicine" maxlength="300" class="textinput textInput form-control"
-                required id="id_current_medicine"> </div>
-          </div>
-          <div id="div_id_allergies" class="form-group"> <label for="id_allergies" class=" requiredField">
-              Allergies<span class="asteriskField">*</span> </label>
-            <div class=""> <input type="text" name="allergies" maxlength="300" class="textinput textInput form-control" required
-                id="id_allergies"> </div>
-          </div>
-          <div class="form-group">
-            <div id="div_id_diagonised_with_covid" class="form-check"> <input type="checkbox" name="diagonised_with_covid"
-                class="checkboxinput form-check-input" id="id_diagonised_with_covid"> <label for="id_diagonised_with_covid"
-                class="form-check-label">
-                Diagonised with covid
-              </label> </div>
-          </div>
-          <div id="div_id_diagonised_further_detail" class="form-group"> <label for="id_diagonised_further_detail" class="">
-              Diagonised further detail
-            </label>
-            <div class=""> <textarea name="diagonised_further_detail" cols="10" rows="3" class="textarea form-control"
-                id="id_diagonised_further_detail">
-        </textarea> </div>
-          </div>
-          <div class="form-group">
-            <div id="div_id_accurate_information" class="form-check"> <input type="checkbox" name="accurate_information"
-                class="checkboxinput form-check-input" id="id_accurate_information"> <label for="id_accurate_information"
-                class="form-check-label">
-                Accurate information
-              </label> </div>
+      </div>
+      <div class="tab-pane fade tab" id="personal_details">
+        <div class="card card-body">
+          <legend class="border-bottom mb-4">Personal Details</legend>
+
+            <div id="div_id_first_name" class="form-group"> <label for="id_first_name" class=" requiredField">
+                First name<span class="asteriskField">*</span> </label>
+              <div class=""> <input type="text" name="first_name" maxlength="200"
+                  class="textinput textInput form-control" required id="id_first_name"> </div>
+            </div>
+            <div id="div_id_last_name" class="form-group"> <label for="id_last_name" class=" requiredField">
+                Last name<span class="asteriskField">*</span> </label>
+              <div class=""> <input type="text" name="last_name" maxlength="200"
+                  class="textinput textInput form-control" required id="id_last_name"> </div>
+            </div>
+            <div id="div_id_year_of_birth" class="form-group"> <label for="id_year_of_birth" class=" requiredField">
+                Year of birth<span class="asteriskField">*</span> </label>
+              <div class=""> <input type="text" name="year_of_birth" maxlength="20"
+                  class="textinput textInput form-control" required id="id_year_of_birth"> </div>
+            </div>
+            <div id="div_id_gender" class="form-group"> <label for="id_gender" class=" requiredField">
+                Gender<span class="asteriskField">*</span> </label>
+              <div class=""> <select name="gender" class="select form-control" required id="id_gender">
+                  <option value="" selected>---------</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+
+                </select> </div>
+            </div>
+            <div id="div_id_mobile_no" class="form-group"> <label for="id_mobile_no" class=" requiredField">
+                Mobile no<span class="asteriskField">*</span> </label>
+              <div class=""> <input type="text" name="mobile_no" maxlength="200"
+                  class="textinput textInput form-control" required id="id_mobile_no"> </div>
+            </div>
+            <div id="div_id_dose1_status" class="form-group"> <label for="id_dose1_status" class=" requiredField">
+                Dose1 status<span class="asteriskField">*</span> </label>
+              <div class=""> <select name="dose1_status" class="select form-control" required id="id_dose1_status">
+                  <option value="" selected>---------</option>
+                  <option value="Sheduled">Sheduled</option>
+                  <option value="Not-Sheduled">Not-Sheduled</option>
+                  <option value="Vaccinated">Vaccinated</option>
+
+                </select> </div>
+            </div>
+            <div id="div_id_dose2_status" class="form-group"> <label for="id_dose2_status" class=" requiredField">
+                Dose2 status<span class="asteriskField">*</span> </label>
+              <div class=""> <select name="dose2_status" class="select form-control" required id="id_dose2_status">
+                  <option value="" selected>---------</option>
+                  <option value="Sheduled">Sheduled</option>
+                  <option value="Not-Sheduled">Not-Sheduled</option>
+                  <option value="Vaccinated">Vaccinated</option>
+                </select> </div>
+
+            <br />
+            <div align="center">
+              <button type="button" name="previous_btn_personal_details" id="previous_btn_personal_details"
+                class="btn btn-default btn-lg">Previous</button>
+              <button type="button" name="btn_personal_details" id="btn_personal_details"
+                class="next btn btn-outline-info btn-lg">Next</button>
+            </div>
+            <br />
           </div>
         </div>
-        
-        <div style="overflow:auto;">
-          <div style="float:right;">
-            <button class="btn btn-outline-info mt-3" type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-            <button class="btn btn-outline-info mt-3" type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+      </div>
+      <div class="tab-pane fade tab" id="contact_details">
+        <div class="card card-body">
+          <legend class="border-bottom mb-4">Health Details</legend>
+
+            <div id="div_id_chronic_health_condition" class="form-group"> <label for="id_chronic_health_condition"
+                class="">
+                Chronic health condition
+              </label>
+              <div class=""> <textarea name="chronic_health_condition" cols="10" rows="4" class="textarea form-control"
+                  id="id_chronic_health_condition">
+              </textarea> </div>
+            </div>
+            <div id="div_id_current_medicine" class="form-group"> <label for="id_current_medicine"
+                class=" requiredField">
+                Current medicine<span class="asteriskField">*</span> </label>
+              <div class=""> <input type="text" name="current_medicine" maxlength="300"
+                  class="textinput textInput form-control" required id="id_current_medicine"> </div>
+            </div>
+            <div id="div_id_allergies" class="form-group"> <label for="id_allergies" class=" requiredField">
+                Allergies<span class="asteriskField">*</span> </label>
+              <div class=""> <input type="text" name="allergies" maxlength="300"
+                  class="textinput textInput form-control" required id="id_allergies"> </div>
+            </div>
+            <div class="form-group">
+              <div id="div_id_diagonised_with_covid" class="form-check"> <input type="checkbox"
+                  name="diagonised_with_covid" class="checkboxinput form-check-input" id="id_diagonised_with_covid">
+                <label for="id_diagonised_with_covid" class="form-check-label">
+                  Diagonised with covid
+                </label> </div>
+            </div>
+            <div id="div_id_diagonised_further_detail" class="form-group"> <label for="id_diagonised_further_detail"
+                class="">
+                Diagonised further detail
+              </label>
+              <div class=""> <textarea name="diagonised_further_detail" cols="10" rows="3" class="textarea form-control"
+                  id="id_diagonised_further_detail">
+              </textarea> </div>
+            </div>
+            <div class="form-group">
+              <div id="div_id_accurate_information" class="form-check"> <input type="checkbox"
+                  name="accurate_information" class="checkboxinput form-check-input" id="id_accurate_information">
+                <label for="id_accurate_information" class="form-check-label">
+                  Accurate information
+                </label> </div>
+
+            <br />
+            <div align="center">
+              <button type="button" name="previous_btn_contact_details" id="previous_btn_contact_details"
+                class="btn btn-default btn-lg">Previous</button>
+              <button type="button" name="btn_contact_details" id="btn_contact_details"
+                class="next btn btn-outline-success btn-lg">Register</button>
+            </div>
+            <br />
           </div>
         </div>
-        
-        <!-- Circles which indicates the steps of the form: -->
-        <div style="text-align:center;margin-top:40px;">
-          <span class="step"></span>
-          <span class="step"></span>
-          <span class="step"></span>
-        </div>
-        
-        </form>
+      </div>
+    </div>
+
+  </form>
+</div>
 
 
 
 <style>
-/* Style the form */
-#regForm {
-    background-color: #ffffff;
+  .register_form_section {
+    width: 800px;
     margin: 30px auto;
-    padding: 40px;
-    width: 70%;
-    min-width: 400px;
   }
-  
-  /* Style the input fields */
-  custom_input {
-    padding: 10px;
-    width: 100%;
-    font-size: 17px;
-    font-family: Raleway;
-    border: 1px solid #797979;
-  }
-  
-  /* Mark input boxes that gets an error on validation: */
+
   input.invalid {
     background-color: #ffdddd;
   }
-  
-  /* Hide all steps by default: */
-  .tab {
-    display: none;
-  }
-  
-  /* Make circles that indicate the steps of the form: */
-  .step {
-    height: 15px;
-    width: 15px;
-    margin: 0 2px;
-    background-color: #bbbbbb;
-    border: none;
-    border-radius: 50%;
-    display: inline-block;
-    opacity: 0.5;
-  }
-  
-  /* Mark the active step: */
-  .step.active {
-    opacity: 1;
-  }
-  
-  /* Mark the steps that are finished and valid: */
-  .step.finish {
-    background-color: #4CAF50;
+
+
+  .lg {
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+    border-radius: 6px;
   }
 
+  .btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+  }
+
+  .fade {
+    transition: opacity .15s linear;
+  }
+
+  .fade.in {
+    opacity: 1;
+  }
+
+  .fade:not(.show) {
+    opacity: 1;
+  }
+
+  .tab-content>.tab-pane {
+    display: none;
+  }
+
+  .tab-content>.active {
+    display: block;
+  }
+
+  .box {
+    width: 800px;
+    margin: 0 auto;
+  }
+
+  .active_tab1 {
+    background-color: #fff;
+    color: #333;
+    font-weight: 600;
+  }
+
+  .inactive_tab1 {
+    background-color: #f5f5f5;
+    color: #333;
+    cursor: not-allowed;
+  }
+
+  .has-error {
+    border-color: #cc0000;
+    background-color: #ffff99;
+  }
 </style>
 
 
 <script>
-var currentTab = 0; // Current tab is set to be the first tab (0)
-showTab(currentTab); // Display the current tab
-
-function showTab(n) {
-  // This function will display the specified tab of the form ...
-  var x = document.getElementsByClassName("tab");
-  x[n].style.display = "block";
-  // ... and fix the Previous/Next buttons:
-  if (n == 0) {
-    document.getElementById("prevBtn").style.display = "none";
-  } else {
-    document.getElementById("prevBtn").style.display = "inline";
-  }
-  if (n == (x.length - 1)) {
-    document.getElementById("nextBtn").innerHTML = "Submit";
-  }else{
-    document.getElementById("nextBtn").innerHTML = "Next";
-  }
-
-  //for validation is user is valid or not
-
-  // ... and run a function that displays the correct step indicator:
-  fixStepIndicator(n)
-}
-
-function nextPrev(n) {
-  console.log('next',n)
-
-
-  
-  // This function will figure out which tab to display
-  var x = document.getElementsByClassName("tab");
-  // Exit the function if any field in the current tab is invalid:
-  if (n == 1 && !validateForm()) return false;
-  
-
-  // Hide the current tab:
-  x[currentTab].style.display = "none";
-  // Increase or decrease the current tab by 1:
-
-  if (n == 1 && !isUserExist()){
-    console.log('userexist',isUserExist())
-    currentTab = currentTab + n;
-  }
-  // if you have reached the end of the form... :
-  if (currentTab >= x.length) {
-    //...the form gets submitted:
-    document.getElementById("regForm").submit();
-    return false;
-  }
-  // Otherwise, display the correct tab:
-  showTab(currentTab);
-}
-
-function validateForm() {
-  // This function deals with validation of the form fields
-  var x, y, i, valid = true;
-  x = document.getElementsByClassName("tab");
-  y = x[currentTab].getElementsByTagName("input");
-  // A loop that checks every input field in the current tab:
-  for (i = 0; i < y.length; i++) {
-    // If a field is empty...
-    if (y[i].value == "") {
-      // add an "invalid" class to the field:
-      y[i].className += " invalid";
-      // and set the current valid status to false:
-      valid = false;
+  function validateForm(currentTab) {
+    var x, y, i, valid = true;
+    x = document.getElementsByClassName("tab");
+    y = x[currentTab].getElementsByTagName("input");
+    for (i = 0; i < y.length; i++) {
+      if (y[i].value == "") {
+        y[i].className += " invalid";
+        valid = false;
+      }
     }
+    return valid;
   }
-  // If the valid status is true, mark the step as finished and valid:
-  if (valid) {
-    document.getElementsByClassName("step")[currentTab].className += " finish";
-  }
-  return valid; // return the valid status
-}
 
-function fixStepIndicator(n) {
-  // This function removes the "active" class of all steps...
-  var i, x = document.getElementsByClassName("step");
-  for (i = 0; i < x.length; i++) {
-    x[i].className = x[i].className.replace(" active", "");
-  }
-  //... and adds the "active" class to the current step:
-  x[n].className += " active";
-}
 
-function isUserExist(){
-var value;
-var email = document.getElementById('id_email').value
-var alertBox = document.getElementById('alert-box')
-console.log('check email', email)
-  $.ajax({
-            type: 'GET',
-            url: '/is_email_already_exist/',
-            data : {
-                'email' : email
-            },
-            success: function (response) {
-                console.log(response.userExist)
-                if(response.userExist){
-                  alertBox.innerHTML = `<div class="alert alert-danger" role="alert" id="alert-box">
+  $(document).ready(function () {
+
+    $('#btn_login_details').click(function () {
+
+      current_fs = $(this).parent();
+      next_fs = $(this).parent().next();
+
+
+      var error_email = '';
+      var error_password = '';
+      var error_password2 = '';
+      var filter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
+      if ($.trim($('#id_email').val()).length == 0) {
+        error_email = 'Email is required';
+        $('#error_email').text(error_email);
+        $('#id_email').addClass('has-error');
+      }
+      else {
+        if (!filter.test($('#id_email').val())) {
+          error_email = 'Invalid Email';
+          $('#error_email').text(error_email);
+          $('#id_email').addClass('has-error');
+        }
+        else {
+          error_email = '';
+          $('#error_email').text(error_email);
+          $('#id_email').removeClass('has-error');
+        }
+      }
+
+      if ($.trim($('#id_password1').val()).length == 0) {
+        error_password = 'Password is required';
+        $('#error_password').text(error_password);
+        $('#id_password1').addClass('invalid');
+      }
+      else {
+        error_password = '';
+        $('#error_password').text(error_password);
+        $('#id_password1').removeClass('invalid');
+      }
+
+      if ($.trim($('#id_password2').val()) != $.trim($('#id_password1').val())) {
+        error_password2 = 'Password didnt match';
+        $('#error_password2').text(error_password2);
+        $('#id_password2').addClass('invalid');
+      }
+      else {
+        error_password2 = '';
+        $('#error_password2').text(error_password2);
+        $('#id_password2').removeClass('invalid');
+      }
+
+      if (error_email != '' || error_password != '' || error_password2 != '') {
+        return false;
+      }
+
+      else {
+        isUserExist()
+      }
+    });
+
+    $('#previous_btn_personal_details').click(function () {
+      $('#list_personal_details').removeClass('active active_tab1');
+      $('#list_personal_details').removeAttr('href data-toggle');
+      $('#personal_details').removeClass('active in');
+      $('#list_personal_details').addClass('inactive_tab1');
+      $('#list_login_details').removeClass('inactive_tab1');
+      $('#list_login_details').addClass('active_tab1 active');
+      $('#list_login_details').attr('href', '#login_details');
+      $('#list_login_details').attr('data-toggle', 'tab');
+      $('#login_details').addClass('active in');
+    });
+
+    $('#btn_personal_details').click(function () {
+      var tab = 1;
+
+      if (!validateForm(tab)) return false;
+
+      else {
+        $('#list_personal_details').removeClass('active active_tab1');
+        $('#list_personal_details').removeAttr('href data-toggle');
+        $('#personal_details').removeClass('active');
+        $('#list_personal_details').addClass('inactive_tab1');
+        $('#list_contact_details').removeClass('inactive_tab1');
+        $('#list_contact_details').addClass('active_tab1 active');
+        $('#list_contact_details').attr('href', '#contact_details');
+        $('#list_contact_details').attr('data-toggle', 'tab');
+        $('#contact_details').addClass('active in');
+      }
+    });
+
+    $('#previous_btn_contact_details').click(function () {
+      $('#list_contact_details').removeClass('active active_tab1');
+      $('#list_contact_details').removeAttr('href data-toggle');
+      $('#contact_details').removeClass('active in');
+      $('#list_contact_details').addClass('inactive_tab1');
+      $('#list_personal_details').removeClass('inactive_tab1');
+      $('#list_personal_details').addClass('active_tab1 active');
+      $('#list_personal_details').attr('href', '#personal_details');
+      $('#list_personal_details').attr('data-toggle', 'tab');
+      $('#personal_details').addClass('active in');
+    });
+
+    $('#btn_contact_details').click(function () {
+      var tab = 2;
+
+      if (!validateForm(tab)) return false;
+      else {
+        $('#btn_contact_details').attr("disabled", "disabled");
+        $(document).css('cursor', 'prgress');
+        $("#register_form").submit();
+      }
+
+    });
+
+  });
+
+
+  function isUserExist() {
+    var email = document.getElementById('id_email').value
+    var alertBox = document.getElementById('alert-box')
+    console.log('check email', email)
+    $.ajax({
+      type: 'GET',
+      url: '/is_email_already_exist/',
+      data: {
+        'email': email
+      },
+      success: function (response) {
+        console.log(response.userExist)
+        if (response.userExist) {
+          alertBox.innerHTML = `<div class="alert alert-danger" role="alert" id="alert-box">
                                           Email already exist ...!</div>`
-                }
-                                               
-                                    },
+        }
+        else {
+          $('#list_login_details').removeClass('active active_tab1');
+          $('#list_login_details').removeAttr('href data-toggle');
+          $('#login_details').removeClass('active');
+          $('#list_login_details').addClass('inactive_tab1');
+          $('#list_personal_details').removeClass('inactive_tab1');
+          $('#list_personal_details').addClass('active_tab1 active');
+          $('#list_personal_details').attr('href', '#personal_details');
+          $('#list_personal_details').attr('data-toggle', 'show');
+          $('#personal_details').addClass('active in');
+        }
 
-            error: function (error) {
-                console.log(error)
-            }
-        })
-        return value;
-}
+      },
+
+      error: function (error) {
+        console.log(error)
+      }
+    })
+  }
 
 
 

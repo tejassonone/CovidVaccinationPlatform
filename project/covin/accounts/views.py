@@ -68,6 +68,7 @@ def register1(request):
     return render(request, 'accounts/register.html', context)
 
 
+
 def is_email_already_exist(request, *args, **kwargs):
     email = request.GET.get('email')
     if Beneficiary.objects.filter(email=email).exists():
