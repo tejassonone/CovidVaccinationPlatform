@@ -1,0 +1,37 @@
+{% extends "accounts/update_account.html" %}
+{% block content2 %}
+{% load crispy_forms_tags %}
+
+<legend class="border-bottom mb-4">Personal Details</legend>
+<form method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="next" value="update_health_info">
+  {{form1 | crispy}}
+<br />
+<div align="center">
+  <button type="submit" name="btn_personal_details" id="btn_personal_details"
+    class="next btn btn-outline-info btn-lg">Save</button>
+</div>
+</form>
+
+
+<script>
+  $(document).ready(function () {
+
+    var status1 = jQuery('select[name=dose1_status]');
+    status1.attr('disabled', 'disabled');
+    var status2 = jQuery('select[name=dose2_status]');
+    status2.attr('disabled', 'disabled');
+
+    $('#list_health_details').removeClass('active active_tab1');
+    $('#list_health_details').addClass('inactive_tab1');
+    $('#list_personal_details').removeClass('inactive_tab1');
+    $('#list_personal_details').addClass('active_tab1 active');
+    $('#list_personal_details').attr('data-toggle', 'tab');
+
+  });
+
+</script>
+
+
+{% endblock %}

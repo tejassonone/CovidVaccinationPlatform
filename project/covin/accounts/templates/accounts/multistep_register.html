@@ -5,7 +5,7 @@
 
 
 <div class="container register_form_section">
-  <form id="regForm" method="POST">
+  <form id="register_form" method="POST">
     {% csrf_token %}
     {% if next_url %}
     <input type="hidden" name="next" value="{{next_url}}">
@@ -19,7 +19,7 @@
         <a class="nav-link inactive_tab1" id="list_personal_details" style="border:1px solid #ccc">Personal Details</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link inactive_tab1" id="list_contact_details" style="border:1px solid #ccc">Contact Details</a>
+        <a class="nav-link inactive_tab1" id="list_contact_details" style="border:1px solid #ccc">Health Details</a>
       </li>
     </ul>
     <div class="tab-content" style="margin-top:16px;">
@@ -173,7 +173,7 @@
             <div align="center">
               <button type="button" name="previous_btn_contact_details" id="previous_btn_contact_details"
                 class="btn btn-default btn-lg">Previous</button>
-              <button type="button" name="btn_contact_details" id="btn_contact_details"
+              <button type="submit" name="btn_contact_details" id="btn_contact_details"
                 class="next btn btn-outline-success btn-lg">Register</button>
             </div>
             <br />
@@ -194,6 +194,10 @@
   }
 
   input.invalid {
+    background-color: #ffdddd;
+  }
+
+  select.invalid {
     background-color: #ffdddd;
   }
 
@@ -260,9 +264,20 @@
     var x, y, i, valid = true;
     x = document.getElementsByClassName("tab");
     y = x[currentTab].getElementsByTagName("input");
+    s = x[currentTab].getElementsByTagName("select");
+    s_value=s[1].options[s[1].selectedIndex].value
+    console.log('s',s_value)
     for (i = 0; i < y.length; i++) {
       if (y[i].value == "") {
         y[i].className += " invalid";
+        valid = false;
+      }
+    }
+
+    for(var j=0; j<s.length; j++){
+      if(s[j].options[s[j].selectedIndex].value == ""){
+        console.log(s[j].selectedIndex)
+        s[j].className += " invalid";
         valid = false;
       }
     }
@@ -271,6 +286,7 @@
 
 
   $(document).ready(function () {
+
 
     $('#btn_login_details').click(function () {
 

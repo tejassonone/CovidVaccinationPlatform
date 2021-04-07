@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+
+<div class="container form_section">
+
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a href="{% url 'update_personal_info' %}" class="nav-link active_tab1" id="list_personal_details" style="border:1px solid #ccc">Personal Details</a>
+    </li>
+    <li class="nav-item">
+      <a href="{% url 'update_health_info' %}" class="nav-link inactive_tab1" id="list_health_details" style="border:1px solid #ccc">Health Details</a>
+    </li>
+  </ul>
+  <div class="tab-content" style="margin-top:16px;">
+    <div class="tab-pane active tab" id="personal_details">
+      <div class="card card-body">
+        {% block content2 %}
+        {% endblock %}
+        <br />
+      </div>
+    </div>
+  </div>
+
+
+
+
+<style>
+  .form_section {
+    width: 800px;
+    margin: 30px auto;
+  }
+
+  .lg {
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+    border-radius: 6px;
+  }
+
+  .btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+  }
+
+  .fade {
+    transition: opacity .15s linear;
+  }
+
+  .fade.in {
+    opacity: 0;
+  }
+
+  .fade:not(.show) {
+    opacity: 1;
+  }
+
+  .tab-content>.tab-pane {
+    display: none;
+  }
+
+  .tab-content>.active {
+    display: block;
+  }
+
+  .box {
+    width: 800px;
+    margin: 0 auto;
+  }
+
+  .active_tab1 {
+    background-color: #fff;
+    color: #333;
+    font-weight: 600;
+  }
+
+  .inactive_tab1 {
+    background-color: #f5f5f5;
+    color: #333;
+    cursor: not-allowed;
+  }
+
+  .has-error {
+    border-color: #cc0000;
+    background-color: #ffff99;
+  }
+</style>
+
+
+
+
+
+
+
+{% endblock %}

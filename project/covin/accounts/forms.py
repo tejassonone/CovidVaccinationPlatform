@@ -91,6 +91,12 @@ class BeneficiaryInfoForm(forms.ModelForm):
         fields = ['email', 'password', 'first_name', 'last_name', 'year_of_birth', 'gender', 'mobile_no', 'dose1_status', 'dose2_status',
          'chronic_health_condition', 'current_medicine', 'allergies', 'diagonised_with_covid', 'diagonised_further_detail', 'accurate_information']
 
+class PersonalInfoForm(forms.ModelForm):
+    class Meta:
+        model = Beneficiary
+        fields = ['first_name', 'last_name', 'year_of_birth', 'gender', 'mobile_no', 'dose1_status', 'dose2_status']
 
-
-
+class HealthInfoForm(forms.ModelForm):
+    class Meta:
+        model = Beneficiary
+        fields = ['chronic_health_condition', 'current_medicine', 'allergies', 'diagonised_with_covid', 'diagonised_further_detail', 'accurate_information']

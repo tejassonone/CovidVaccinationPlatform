@@ -1,0 +1,39 @@
+{% extends "accounts/update_account.html" %}
+{% block content2 %}
+{% load crispy_forms_tags %}
+
+
+  <legend class="border-bottom mb-4">Health Details</legend>
+<form method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="next" value="profile">
+  {{form2 | crispy}}
+<br />
+<div align="center">
+  <button type="submit" name="btn_personal_details" id="btn_personal_details"
+    class="next btn btn-outline-info btn-lg">Save</button>
+</div>
+</form>
+
+
+<style>
+
+</style>
+
+
+<script>
+  $(document).ready(function () {
+
+    $('textarea').attr("rows","4")
+
+
+    $('#list_personal_details').removeClass('active active_tab1');
+    $('#list_personal_details').addClass('inactive_tab1');
+    $('#list_health_details').removeClass('inactive_tab1');
+    $('#list_health_details').addClass('active_tab1 active');
+    $('#list_health_details').attr('data-toggle', 'tab');
+  
+  });
+  
+  </script>
+{% endblock %}
