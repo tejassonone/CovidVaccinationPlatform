@@ -32,13 +32,15 @@ def vaccination_form_view(request, pk, *args, **kwargs):
 
 def session_view(request):
     appointment =Appointment.objects.all()
+    not_seduled = Appointment.objects.filter(beneficiary__dose1_status='Not-Sheduled')
+    print('app----',not_seduled)
     vaccinated = Appointment.objects.filter(beneficiary__dose1_status='Vaccinated')
     sheduled = Appointment.objects.filter(beneficiary__dose1_status='Sheduled')
 
     total_appointment = appointment.count
     total_sheduled = sheduled.count()
     total_vaccinated = vaccinated.count()
-    context={'sheduled':sheduled, 'vaccinated':vaccinated, 'total_appointment':total_appointment, 'total_sheduled':total_sheduled, 'total_vaccinated':total_vaccinated}
+    context={'sheduled':sheduled, 'vaccinated':vaccinated, 'total_appointment':total_appointment, 'total_sheduled':total_sheduled, 'total_vaccinated':total_vaccinated, 'appointment':appointment}
     return render(request, 'session/session.html', context)
 
 

@@ -200,6 +200,9 @@
   select.invalid {
     background-color: #ffdddd;
   }
+  select.valid {
+    background-color: rgb(232, 240, 254)
+  }
 
 
   .lg {
@@ -284,14 +287,28 @@
     return valid;
   }
 
+const selectInput = document.getElementById('id_gender')
+selectInput.addEventListener('change', e => {
+          $('#id_gender').removeClass('invalid');
+          $('#id_gender').addClass('valid');
+      })
+const dose1SelectInput = document.getElementById('id_dose1_status')
+dose1SelectInput.addEventListener('change', e => {
+          $('#id_dose1_status').removeClass('invalid');
+          $('#id_dose1_status').addClass('valid');
+      })
+const dose2SelectInput = document.getElementById('id_dose2_status')
+dose2SelectInput.addEventListener('change', e => {
+          $('#id_dose2_status').removeClass('invalid');
+          $('#id_dose2_status').addClass('valid');
+      })
+
 
   $(document).ready(function () {
 
 
     $('#btn_login_details').click(function () {
 
-      current_fs = $(this).parent();
-      next_fs = $(this).parent().next();
 
 
       var error_email = '';

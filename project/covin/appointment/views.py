@@ -1,5 +1,5 @@
 import random, json
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from vaccine_centre.models import VaccineCentre
 from accounts.models import Beneficiary
@@ -79,8 +79,24 @@ def book_appointment(request, id, *args, **kwargs):
     return render(request, 'appointment/book_appointment.html', context)
 
 
+def booked_appointment(request,*args, **kwargs):
+    beneficiary = Beneficiary.objects.get(email=request.user)
+    appointment = beneficiary.appointment_set.all()
+    print('app',appointment)
+    context ={
+        'appointment':appointment
+    }
+    return render(request, 'appointment/booked_appointment.html', context)
 
-  
+
+def delete_appointment(request, id, *args, **kwargs):
+    appointment =Appointment.objects.get(appointment_id=id)
+    print('id=',appointment)
+    if request.method=='POST':
+        appointment.delete()
+        return redirect('booked_appointment')
+    context ={ }
+    return render(request, 'appointment/delete_appointment.html', context)   
  
 
 
@@ -97,8 +113,9 @@ def book_action_view(request):
     print("status",beneficiary.dose1_status)
     if beneficiary.dose1_status == 'Not-Sheduled':
         dose='1'
-    else:
-        dose='2' 
+    if beneficiary.dose1_status == 'Vaccinated':
+        dose='2'
+
     if action == "book":
         new_book = Appointment.objects.create(
             beneficiary=beneficiary, 

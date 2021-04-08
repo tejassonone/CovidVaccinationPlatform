@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+
+<p>Are sure you want to cancel?</p>
+<form action="" method="POST">
+    {% csrf_token %}
+    <a class="btn-btn-warning" href="{% url 'booked_appointment' %}">cancel</a>
+    <input class="btn btn-danger" type="submit" name="confirm">
+</form>
+
+
+{% endblock %}

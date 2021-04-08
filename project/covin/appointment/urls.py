@@ -11,6 +11,9 @@ urlpatterns = [
     path('block-json/<str:state>/<str:district>/<str:block>/', views.get_json_pincode_data, name='pincode-json'),
     path('search/', views.filter_view, name='search'),
     path('book_appointment_view/', views.book_action_view, name='book_appointment_view'),
+    path('booked_appointment/', views.booked_appointment, name='booked_appointment'),
+    path('delete_appointment/<int:id>/', views.delete_appointment, name='delete_appointment'),
+
 
 
 ]
