@@ -5,12 +5,21 @@ from accounts.models import Beneficiary
 import json
 from accounts.forms import RegisterForm
 from .forms import VaccinationStatusForm
-
+from django.db.models import Q
 # Create your views here.
+from django.views.generic import ListView
 
-def home_view(request, *args, **kwargs):
-    return render(request, "session/dashboard.html", context={}, status=200)
 
+def dashboard_view(request):
+    appointment =Appointment.objects.all()
+    vaccinated = Appointment.objects.filter(Q(beneficiary__dose1_status='Vaccinated') or Q(beneficiary__dose2_status='Vaccinated'))
+    sheduled = Appointment.objects.filter(Q(beneficiary__dose1_status='Sheduled') or Q(beneficiary__dose2_status='Sheduled'))
+
+    total_appointment = appointment.count()
+    total_sheduled = sheduled.count()
+    total_vaccinated = vaccinated.count()
+    context={'total_sheduled':total_sheduled, 'total_vaccinated':total_vaccinated, 'total_appointment':total_appointment}
+    return render(request, 'session/dashboard.html', context)
 
 def vaccination_form_view(request, pk, *args, **kwargs):
     appointment = Appointment.objects.get(appointment_id=pk)
@@ -32,11 +41,10 @@ def vaccination_form_view(request, pk, *args, **kwargs):
 
 def session_view(request):
     appointment =Appointment.objects.all()
-    not_seduled = Appointment.objects.filter(beneficiary__dose1_status='Not-Sheduled')
-    vaccinated = Appointment.objects.filter(beneficiary__dose1_status='Vaccinated')
-    sheduled = Appointment.objects.filter(beneficiary__dose1_status='Sheduled')
+    vaccinated = Appointment.objects.filter(Q(beneficiary__dose1_status='Vaccinated') or Q(beneficiary__dose2_status='Vaccinated'))
+    sheduled = Appointment.objects.filter(Q(beneficiary__dose1_status='Sheduled') or Q(beneficiary__dose2_status='Sheduled'))
 
-    total_appointment = appointment.count
+    total_appointment = appointment.count()
     total_sheduled = sheduled.count()
     total_vaccinated = vaccinated.count()
     context={'sheduled':sheduled, 'vaccinated':vaccinated, 'total_appointment':total_appointment, 'total_sheduled':total_sheduled, 'total_vaccinated':total_vaccinated, 'appointment':appointment}
@@ -45,27 +53,44 @@ def session_view(request):
 
 
 
+class AppointmentListView(ListView):
+    model = Appointment
+    template_name = 'session/list.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        qs=Appointment.objects.all()
+        response = [{'beneficiary':x.beneficiary.first_name +" " + x.beneficiary.last_name, 'dose':x.dose, 'appointment_id':x.appointment_id, 'session_date':x.session_date, 'slot':x.slot} for x in qs]
+        context["qs_json"] = json.dumps(list(response), default=str)
+        return context
 
+class VaccinatedListView(ListView):
+    model = Appointment
+    template_name = 'session/list.html'
 
+    def get_queryset(self):
+        return Appointment.objects.filter(Q(beneficiary__dose1_status='Vaccinated') or Q(beneficiary__dose2_status='Vaccinated')) 
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        qs=Appointment.objects.filter(Q(beneficiary__dose1_status='Vaccinated') or Q(beneficiary__dose2_status='Vaccinated'))
+        response = [{'beneficiary':x.beneficiary.first_name +" " + x.beneficiary.last_name, 'dose':x.dose, 'appointment_id':x.appointment_id, 'session_date':x.session_date, 'slot':x.slot} for x in qs]
+        context["qs_json"] = json.dumps(list(response), default=str)
+        return context
 
+class PendingListView(ListView):
+    model = Appointment
+    template_name = 'session/list.html'
 
+    def get_queryset(self):
+        return Appointment.objects.filter(Q(beneficiary__dose1_status='Sheduled') or Q(beneficiary__dose2_status='Sheduled'))
 
-
-
-
-
-
-def list_view(request, *args, **kwargs):
-    qs = Appointment.objects.all()
-    print("QS",qs)
-    list = [{"id": x.appointment_id , "name": x.beneficiary.first_name, "appointment_date":x.session_date} for x in qs]
-    data = {
-        "isUser": False,
-        "response": list
-    }
-    return JsonResponse(data)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        qs=Appointment.objects.filter(Q(beneficiary__dose1_status='Sheduled') or Q(beneficiary__dose2_status='Sheduled'))
+        response = [{'beneficiary':x.beneficiary.first_name +" " + x.beneficiary.last_name, 'dose':x.dose, 'appointment_id':x.appointment_id, 'session_date':x.session_date, 'slot':x.slot} for x in qs]
+        context["qs_json"] = json.dumps(list(response), default=str)
+        return context
 
 
 
