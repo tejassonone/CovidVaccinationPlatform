@@ -5,109 +5,143 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
 
-
-
-
-  <div class="card w-200 mb-4" style="width: 1000px;">
-    <div class="card-body">
-      <h5 class="card-title">{{qs.centre_name}}</h5>
-      <p class="card-text">{{qs.block_name}}, {{qs.district_name}}, {{qs.pincode}}, {{qs.state_name}}</p>
-    </div>
+<div class="card w-200 mb-4" style="width: 1000px;">
+  <div class="card-body">
+    <h5 class="card-title">{{qs.centre_name}}</h5>
+    <p class="card-text">{{qs.block_name}}, {{qs.district_name}}, {{qs.pincode}}, {{qs.state_name}}</p>
   </div>
+</div>
 
-  <div class="card w-200 mb-4" style="width: 1000px;">
-    <div class="card-body">
+<div class="card w-200 mb-4" style="width: 1000px;">
+  <div class="card-body">
 
+    <div class="container row">
+      <div class="col-md mb-4">
+        <h5 class="card-title">Centre ID</h5>
+        <p class="card-text" id="centre_id">{{qs.centre_id}}</p>
+      </div>
+      <div class="col-md mb-4">
+        <h5 class="card-title">Fee Type</h5>
+        <p class="card-text">{{qs.fee_type}}</p>
+      </div>
+    </div>
+
+
+    <div class="container row">
+      <div class="col-md mb-4">
+        <h5 class="card-title"> Timing From</h5>
+        <p class="card-text">{{qs.timing_from}}</p>
+      </div>
+      <div class="col-md mb-4">
+        <h5 class="card-title">Timing To</h5>
+        <p class="card-text">{{qs.timing_to}}</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<div class="card mb-4" style="width: 1000px;height: 80px;">
+  <div class="card-body">
+    <h5 class="card-title text-center">
       <div class="container row">
-        <div class="col-md mb-4">        
-          <h5 class="card-title">Centre ID</h5>
-          <p class="card-text" id="centre_id">{{qs.centre_id}}</p>
-        </div>
-        <div class="col-md mb-4">
-          <h5 class="card-title">Fee Type</h5>
-          <p class="card-text">{{qs.fee_type}}</p>
-        </div>
+        <p class="col-md">Session ID</p>
+        <p class="col-md">Session Date</p>
+        <p class="col-md">Slot</p>
+        <p class="col-md">Available Capacity</p>
+        <p class="col-md">Action</p>
       </div>
+    </h5>
+  </div>
+</div>
 
-
+{% for session in sessions %}
+<div class="card w-200 mb-4" style="width: 1000px;">
+  <div class="card-body">
+    <div class="card-text text-center">
       <div class="container row">
-        <div class="col-md mb-4">        
-          <h5 class="card-title"> Timing From</h5>
-          <p class="card-text">{{qs.timing_from}}</p>
-        </div>
-        <div class="col-md mb-4">
-          <h5 class="card-title">Timing To</h5>
-          <p class="card-text">{{qs.timing_to}}</p>
-        </div>
+        <p class="col-md" id="session_id">{{session.session_id}}</p>
+        <p class="col-md">{{session.session_date}}</p>
+        <p class="col-md">{{session.slot}}</p>
+        <p class="col-md">{{session.avalable_capacity}}</p>
+
+
+        <form class="col-md" action="" method="POST">
+          {% csrf_token %}
+          <div class="non_visible">
+            {% if beneficiary %}
+            <div id="div_id_beneficiary" class="form-group"> <label for="id_beneficiary" class=" requiredField">
+                Beneficiary<span class="asteriskField">*</span> </label>
+              <div class=""> <select name="beneficiary" class="select form-control" required id="id_beneficiary">
+                  <option value="{{beneficiary.id}}" selected>{{beneficiary}}</option>
+                </select> </div>
+            </div>
+            {% endif %}
+            <div id="div_id_session" class="form-group"> <label for="id_session" class=" requiredField">
+                Session<span class="asteriskField">*</span> </label>
+              <div class=""> <select name="session" class="select form-control" required id="id_session">
+                  <option value="{{session.id}}" selected>{{session}}</option>
+                </select> </div>
+            </div>
+            {% if dose %}
+            <div id="div_id_dose" class="form-group"> <label for="id_dose" class=" requiredField">
+                Dose<span class="asteriskField">*</span> </label>
+              <div class=""> <input type="text" name="dose" maxlength="2" class="textinput textInput form-control"
+                  required id="id_dose" value="{{dose}}"> </div>
+            </div>
+            {% endif %}
+            <div id="div_id_appointment_id" class="form-group"> <label for="id_appointment_id" class=" requiredField">
+                Appointment id<span class="asteriskField">*</span> </label>
+              <div class=""> <input type="text" name="appointment_id" maxlength="20"
+                  class="textinput textInput form-control" required id="id_appointment_id" value="{{appointment_id}}">
+              </div>
+            </div>
+            <div id="div_id_session_date" class="form-group"> <label for="id_session_date" class=" requiredField">
+                Session date<span class="asteriskField">*</span> </label>
+              <div class=""> <input type="text" name="session_date" maxlength="20"
+                  class="textinput textInput form-control" required id="id_session_date"
+                  value="{{session.session_date}}"> </div>
+            </div>
+            <div id="div_id_slot" class="form-group"> <label for="id_slot" class=" requiredField">
+                Slot<span class="asteriskField">*</span> </label>
+              <div class=""> <input type="text" name="slot" maxlength="50" class="textinput textInput form-control"
+                  required id="id_slot" value="{{session.slot}}"> </div>
+            </div>
+
+
+
+            {% if value1 %}
+            <select name="dose1_status" class="select form-control" required id="id_dose1_status">
+              <option value="">---------</option>
+              <option value="Sheduled">Sheduled</option>
+              <option value="{{value1}}" selected>Not-Sheduled</option>
+            </select>
+
+            <select name="dose2_status" class="select form-control" required id="id_dose2_status">
+              <option value="">---------</option>
+              <option value="Sheduled">Sheduled</option>
+              <option value="{{value2}}" selected>Not-Sheduled</option>
+              <option value="Vaccinated">Vaccinated</option>
+            </select>
+            {% endif %}
+          </div>
+          <button class="btn btn-outline-info" type="submit">Book</button>
+        </form>
+
       </div>
-
     </div>
   </div>
-
-
-  <div class="card mb-4" style="width: 1000px;height: 80px;">
-    <div class="card-body">
-      <h5 class="card-title text-center">
-        <div class="container row">
-          <p class="col-md">Session ID</p>
-          <p class="col-md">Session Date</p>
-          <p class="col-md">Slot</p>
-          <p class="col-md">Available Capacity</p>
-          <p class="col-md">Action</p>
-        </div>
-      </h5>
-      
-    </div>
-  </div>
-
-  {% for session in sessions %}
-  <div class="card w-200 mb-4" style="width: 1000px;">
-    <div class="card-body">
-      <div class="card-text text-center">
-        <div class="container row">
-          <p class="col-md" id="session_id">{{session.session_id}}</p>
-          <p class="col-md">{{session.session_date}}</p>
-          <p class="col-md">{{session.slot}}</p>
-          <p class="col-md">{{session.avalable_capacity}}</p>
-          <button class="btn btn-primary col-md" onclick=handleBookActionBtn({{session.session_id}})>Book</button>
-        </div>
-      </div>
-    </div>
-  </div>
-  {% endfor %}
+</div>
+{% endfor %}
 
 
 
+<style>
+  .non_visible {
+    display: none;
+  }
+</style>
 
-<script>
-
-
-
-
-
-
-
-function handleBookActionBtn(session_id) {
-  console.log(session_id)
-  $.ajax({
-            type: 'GET',
-            url: '/appointment/book_appointment_view/',
-            data : {
-                'session_id' : session_id,
-                'action' : 'book'
-
-            },
-            success: function (response) {
-                console.log(response)                                    
-                                    },
-
-            error: function (error) {
-                console.log(error)
-            }
-        })
-}
-
-
-</script>
 
 {% endblock %}

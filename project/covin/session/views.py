@@ -33,7 +33,6 @@ def vaccination_form_view(request, pk, *args, **kwargs):
 def session_view(request):
     appointment =Appointment.objects.all()
     not_seduled = Appointment.objects.filter(beneficiary__dose1_status='Not-Sheduled')
-    print('app----',not_seduled)
     vaccinated = Appointment.objects.filter(beneficiary__dose1_status='Vaccinated')
     sheduled = Appointment.objects.filter(beneficiary__dose1_status='Sheduled')
 

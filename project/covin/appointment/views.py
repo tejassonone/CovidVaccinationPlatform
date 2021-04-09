@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from vaccine_centre.models import VaccineCentre
 from accounts.models import Beneficiary
 from session.models import Session
-from .forms import AppointmentForm
+from .forms import AppointmentForm, BeneficiaryForm
 from .models import Appointment
 
 # Create your views here.
@@ -72,9 +72,39 @@ def filter_view(request):
 def book_appointment(request, id, *args, **kwargs):
     centre = VaccineCentre.objects.get(centre_id=id)
     sessions = centre.session_set.all()
+    beneficiary = Beneficiary.objects.get(email=request.user)
+    form = BeneficiaryForm(instance=beneficiary)
+    if beneficiary.dose1_status == 'Not-Sheduled':
+        value1='Sheduled'
+        value2 = beneficiary.dose2_status
+        dose='1'
+    elif beneficiary.dose2_status == 'Not-Sheduled' and beneficiary.dose1_status != 'Not-Sheduled':
+        dose2_status = 'dose2_status'
+        value1 = beneficiary.dose1_status
+        value2 ='Sheduled'
+        dose='2'
+    else:
+        value1=""
+        value2=""
+        dose="5"
+    if request.method=='POST':
+        app_form=AppointmentForm(request.POST)
+        user_form=BeneficiaryForm(request.POST, instance=beneficiary)
+        if app_form.is_valid() and user_form.is_valid():
+            app_obj=app_form.save(commit=False)
+            user_obj=form.save(commit=False)
+            app_obj.save()
+            user_obj.save()
+            return redirect('profile')
     context ={
         'qs':centre,
         'sessions':sessions,
+        'beneficiary':beneficiary,
+        'dose':dose,
+        'appointment_id':random.randint(0, 100000),
+        'form':form,
+        'value1':value1,
+        'value2':value2
     }
     return render(request, 'appointment/book_appointment.html', context)
 
@@ -82,7 +112,6 @@ def book_appointment(request, id, *args, **kwargs):
 def booked_appointment(request,*args, **kwargs):
     beneficiary = Beneficiary.objects.get(email=request.user)
     appointment = beneficiary.appointment_set.all()
-    print('app',appointment)
     context ={
         'appointment':appointment
     }
@@ -91,7 +120,6 @@ def booked_appointment(request,*args, **kwargs):
 
 def delete_appointment(request, id, *args, **kwargs):
     appointment =Appointment.objects.get(appointment_id=id)
-    print('id=',appointment)
     if request.method=='POST':
         appointment.delete()
         return redirect('booked_appointment')
@@ -101,29 +129,31 @@ def delete_appointment(request, id, *args, **kwargs):
 
 
 
-def book_action_view(request):
-    s_id = request.GET.get("session_id")
-    s_date = request.GET.get("session_date")
-    s_slot = request.GET.get("slot")
-    action = request.GET.get("action")
-    qs = Session.objects.get(session_id=s_id)
-    s_date =qs.session_date
-    s_slot = qs.slot
-    beneficiary = Beneficiary.objects.get(email=request.user)
-    print("status",beneficiary.dose1_status)
-    if beneficiary.dose1_status == 'Not-Sheduled':
-        dose='1'
-    if beneficiary.dose1_status == 'Vaccinated':
-        dose='2'
 
-    if action == "book":
-        new_book = Appointment.objects.create(
-            beneficiary=beneficiary, 
-            session=qs,
-            dose=dose,
-            appointment_id=random.randint(0, 100000),
-            session_date=s_date,
-            slot=s_slot,
-                )
-        return JsonResponse({}, status=201)
-    return JsonResponse({}, status=200)
+
+
+
+
+def book_action_view(request):
+    beneficiary = Beneficiary.objects.get(email=request.user)
+    app_form = AppointmentForm()
+    dose='3'
+    if beneficiary.dose1_status == 'Not-Sheduled':
+        value1='Sheduled'
+        value2 = beneficiary.dose2_status
+        dose='1'
+    elif beneficiary.dose2_status == 'Not-Sheduled' and beneficiary.dose1_status != 'Not-Sheduled':
+        dose2_status = 'dose2_status'
+        value1 = beneficiary.dose1_status
+        value2 ='Sheduled'
+        dose='2'
+    else:
+        value1=""
+        value2=""
+        dose=""
+    if request.method=='POST':
+        pass
+    context ={'dose':dose}
+    return render(request, 'appointment/book_appointment.html', context)
+
+

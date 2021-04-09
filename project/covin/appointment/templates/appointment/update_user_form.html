@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+
+<form action="" method="POST">
+  {% csrf_token %}
+
+  {% if value1 %}
+  <select name="dose1_status" class="select form-control" required id="id_dose1_status">
+    <option value="">---------</option>
+    <option value="Sheduled">Sheduled</option>
+    <option value="{{value1}}" selected>Not-Sheduled</option>
+    <option value="Vaccinated">Vaccinated</option>
+  </select>
+
+  <select name="dose2_status" class="select form-control" required id="id_dose2_status">
+    <option value="">---------</option>
+    <option value="Sheduled">Sheduled</option>
+    <option value="{{value2}}" selected>Not-Sheduled</option>
+    <option value="Vaccinated">Vaccinated</option>
+  </select>
+  {% endif %}
+  <button type="submit" class="btn btn-primary col-md">Book</button>
+</form>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <div id="div_id_beneficiary" class="form-group"> <label for="id_beneficiary" class=" requiredField">
+      Beneficiary<span class="asteriskField">*</span> </label>
+    <div class=""> <select name="beneficiary" class="select form-control" required id="id_beneficiary">
+        <option value="" selected>---------</option>
+        <option value="7" selected>pratik@gmail.com</option>
+        <option value="9">rohit@gmail.com</option>
+
+      </select> </div>
+  </div>
+  <div id="div_id_session" class="form-group"> <label for="id_session" class=" requiredField">
+      Session<span class="asteriskField">*</span> </label>
+    <div class=""> <select name="session" class="select form-control" required id="id_session">
+        <option value="" selected>---------</option>
+        <option value="1">Session object (1)</option>
+        <option value="2">Session object (2)</option>
+
+      </select> </div>
+  </div>
+  <div id="div_id_dose" class="form-group"> <label for="id_dose" class=" requiredField">
+      Dose<span class="asteriskField">*</span> </label>
+    <div class=""> <input type="text" name="dose" maxlength="2" class="textinput textInput form-control" required
+        id="id_dose"> </div>
+  </div>
+  <div id="div_id_appointment_id" class="form-group"> <label for="id_appointment_id" class=" requiredField">
+      Appointment id<span class="asteriskField">*</span> </label>
+    <div class=""> <input type="text" name="appointment_id" maxlength="20" class="textinput textInput form-control"
+        required id="id_appointment_id"> </div>
+  </div>
+  <div id="div_id_session_date" class="form-group"> <label for="id_session_date" class=" requiredField">
+      Session date<span class="asteriskField">*</span> </label>
+    <div class=""> <input type="text" name="session_date" maxlength="20" class="textinput textInput form-control"
+        required id="id_session_date"> </div>
+  </div>
+  <div id="div_id_slot" class="form-group"> <label for="id_slot" class=" requiredField">
+      Slot<span class="asteriskField">*</span> </label>
+    <div class=""> <input type="text" name="slot" maxlength="50" class="textinput textInput form-control" required
+        id="id_slot"> </div>
+  </div>
+
+  <button type="submit">Submit</button>
+</form>
+
+{% endblock %}
