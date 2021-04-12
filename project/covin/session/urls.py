@@ -11,6 +11,13 @@ urlpatterns = [
 
     path('appointment_list_view/', views.AppointmentListView.as_view(), name='appointment_list_view'),
     path('vaccinated_list_view/', views.VaccinatedListView.as_view(), name='vaccinated_list_view'),
-    path('pending_list_view/', views.PendingListView.as_view(), name='pending_list_view')
+    path('pending_list_view/', views.PendingListView.as_view(), name='pending_list_view'),
+    path('month_chart_view/', views.MonthChartView.as_view(), name='month_chart_view'),
+
+    path('personal_info_view/<str:app_id>/', views.personal_info_view, name='personal_info_view'),
+    path('health_info_view/<str:app_id>/', views.health_info_view, name='health_info_view'),
+    path('vaccination_info_view/<str:app_id>/', views.vaccination_info_view, name='vaccination_info_view'),
+
+
 
 ]

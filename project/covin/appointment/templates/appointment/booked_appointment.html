@@ -2,32 +2,34 @@
 {% block content %}
 
 <div class="container status_section">
-    <div class="card card-body">
-        <legend class="border-bottom mb-4">Booked Appontment</legend>
+  <div class="card card-body">
+    <legend class="border-bottom mb-4">Booked Appontment</legend>
 
-            <table class="table table-sm table-bordered" id="my-table">
-                <thead>
-                  <tr class="table-primary"><th scope="col">Appointment ID</th>
-                  <th scope="col">Appointment Date</th>
-                  <th scope="col">Appontment Slot</th>
-                  <th scope="col">Dose</th>
-                  <th scope="col">Action</th>
-                </tr></thead>
-                 <tbody id="table-data">
-                    {% for app in appointment %}
-                    <tr>
-                        <td>{{app.appointment_id}}</td>
-                        <td>{{app.session_date}}</td>
-                        <td>{{app.slot}}</td>
-                        <td>{{app.dose}}</td>
-                        <td><a class="btn btn-sm btn-danger" href="{% url 'delete_appointment' app.appointment_id %}">cancel</a></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-              </table>
+    <table class="table table-sm table-bordered" id="my-table">
+      <thead>
+        <tr class="table-primary">
+          <th scope="col">Appointment ID</th>
+          <th scope="col">Appointment Date</th>
+          <th scope="col">Appontment Slot</th>
+          <th scope="col">Dose</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody id="table-data">
+        {% for app in appointment %}
+        <tr>
+          <td>{{app.appointment_id}}</td>
+          <td>{{app.session_date}}</td>
+          <td>{{app.slot}}</td>
+          <td>{{app.dose}}</td>
+          <td><a class="btn btn-sm btn-danger" href="{% url 'delete_appointment' app.appointment_id %}">cancel</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
 
 
-    </div>
+  </div>
 </div>
 
 

@@ -27,7 +27,7 @@
     <div class="col">
       <div class="card-body">
         <form action="">
-          <input id="search_input" class="form-control" type="text">
+          <input id="search_input" class="form-control" type="text" placeholder="search by beneficiary name...">
         </form>
       </div>
     </div>
@@ -48,15 +48,19 @@
         <td>{{row.appointment_id}}</td>
         <td>{{row.beneficiary.first_name}} {{row.beneficiary.last_name}}</td>
         <td>{{row.session_date}}</td>
-        <td><button class="btn btn-outline-info">view</button></td>
+        <td><a class="btn btn-outline-info" href="{% url 'personal_info_view' row.appointment_id %}">view</a></td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
 
 
+
+
   <div class="container pag">
     <div id="pagination-wrapper">
+
+
     </div>
   </div>
 
@@ -102,6 +106,11 @@
     font-weight: bold;
 
   }
+
+  .max-capacity {
+    text-align: end;
+    margin-right: 10px;
+  }
 </style>
 
 
@@ -109,25 +118,33 @@
 
 
 <script>
+      function Viewbutton(id) {
+        console.log('id---', id)
+        window.location = '/session/personal_info_view/' + id;
+      }
+
 
   const data = '{{qs_json}}'
 
   const rdata = JSON.parse(data.replace(/&quot;/g, '"'))
   const input = document.getElementById('search_input')
 
-  input.addEventListener('keyup', (e)=>{
+
+
+  input.addEventListener('keyup', (e) => {
     box.innerHTML = ""
-    let filteredArr=[]
+    let filteredArr = []
     filteredArr = rdata.filter(appointment => appointment['beneficiary'].includes(e.target.value))
     console.log(filteredArr)
-    if(filteredArr.length>0){
-      filteredArr.map(item=>{
-        box.innerHTML += `<tr>
-        <td>${item['appointment_id']}</td>
-        <td>${item['beneficiary']}</td>
-        <td>${item['session_date']}</td>
-        <td><button class="btn btn-outline-info">view</button></td>
-      </tr>`
+    if (filteredArr.length > 0) {
+
+      filteredArr.map(item => {
+              box.innerHTML += `<tr>
+              <td>${item['appointment_id']}</td>
+              <td>${item['beneficiary']}</td>
+             <td>${item['session_date']}</td>
+             <td><button class="btn btn-outline-info" onclick=Viewbutton(${item['appointment_id']})>view</button></td>
+           </tr>`
       })
     }
   })
@@ -229,13 +246,13 @@
 
 
 
-  function builtTable(data) {
+  function builtTable() {
     table = document.getElementById('myTable')
 
     var myList = pagination(state.queryset, state.page, state.rows)
     console.log(myList)
 
-    //var data = myList.queryset
+    var data = myList.queryset
 
 
 
@@ -248,7 +265,7 @@
                       <td></td>
                  </tr>`
 
-                      table.innerHTML += row                
+      table.innerHTML += row
     }
     paginationButton(myList.pages)
   }

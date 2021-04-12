@@ -1,0 +1,60 @@
+{% extends "session/beneficiary_detail.html" %}
+{% load crispy_forms_tags %}
+
+{% block link %}
+<li class="nav-item">
+  <a href="" class="nav-link active_tab1" id="list_personal_details" style="border:1px solid #ccc">Personal Details</a>
+</li>
+<li class="nav-item">
+  <a href="{% url 'health_info_view' app_id %}" class="nav-link inactive_tab1" id="list_health_details" style="border:1px solid #ccc">Health Details</a>
+</li>
+<li class="nav-item">
+  <a href="{% url 'vaccination_info_view' app_id%}" class="nav-link inactive_tab1" id="list_vaccination_details" style="border:1px solid #ccc">Vaccination Details</a>
+</li>
+{% endblock link %}
+
+
+
+{% block beneficiary_detail %}
+
+<legend class="border-bottom mb-4">Personal Details</legend>
+<form method="POST">
+  {% csrf_token %}
+  {{form1 | crispy}}
+<br />
+<div align="center">
+  <a name="btn_personal_details" id="btn_personal_details" class="next btn btn-outline-info btn-lg" href="{% url 'health_info_view' app_id %}">Next</a>
+</div>
+</form>
+
+
+<script>
+  $(document).ready(function () {
+
+    var status1 = jQuery('select[name=dose1_status]');
+    status1.attr('disabled', 'disabled');
+    var status2 = jQuery('select[name=dose2_status]');
+    status2.attr('disabled', 'disabled');
+    var first_name = jQuery('input[name=first_name]');
+    first_name.attr('disabled', 'disabled');
+    var last_name = jQuery('input[name=last_name]');
+    last_name.attr('disabled', 'disabled');
+    var year_of_birth = jQuery('input[name=year_of_birth]');
+    year_of_birth.attr('disabled', 'disabled');
+    var gender = jQuery('select[name=gender]');
+    gender.attr('disabled', 'disabled');
+    var mobile_no = jQuery('input[name=mobile_no]');
+    mobile_no.attr('disabled', 'disabled');
+
+    $('#list_health_details').removeClass('active active_tab1');
+    $('#list_health_details').addClass('inactive_tab1');
+    $('#list_personal_details').removeClass('inactive_tab1');
+    $('#list_personal_details').addClass('active_tab1 active');
+    $('#list_personal_details').attr('data-toggle', 'tab');
+
+  });
+
+</script>
+
+
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "session/beneficiary_detail.html" %}
+{% load crispy_forms_tags %}
+
+{% block link %}
+<li class="nav-item">
+  <a href="{% url 'personal_info_view' app_id %}" class="nav-link active_tab1" id="list_personal_details" style="border:1px solid #ccc">Personal Details</a>
+</li>
+<li class="nav-item">
+  <a href="" class="nav-link inactive_tab1" id="list_health_details" style="border:1px solid #ccc">Health Details</a>
+</li>
+<li class="nav-item">
+  <a href="{% url 'vaccination_info_view' app_id%}" class="nav-link inactive_tab1" id="list_vaccination_details" style="border:1px solid #ccc">Vaccination Details</a>
+</li>
+{% endblock link %}
+
+
+{% block beneficiary_detail %}
+
+
+
+  <legend class="border-bottom mb-4">Health Details</legend>
+<form method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="next" value="profile">
+  {{form2 | crispy}}
+<br />
+<div align="center">
+  <a href="{% url 'vaccination_info_view' app_id%}" name="btn_health_details" id="btn_health_details"
+    class="next btn btn-outline-info btn-lg">Next</a>
+</div>
+</form>
+
+
+<style>
+
+</style>
+
+
+<script>
+  $(document).ready(function () {
+
+    var chronic_health_condition = jQuery('textarea[name=chronic_health_condition]');
+    chronic_health_condition.attr('disabled', 'disabled');
+    var current_medicine = jQuery('input[name=current_medicine]');
+    current_medicine.attr('disabled', 'disabled');
+    var allergies = jQuery('input[name=allergies]');
+    allergies.attr('disabled', 'disabled');
+    var diagonised_with_covid = jQuery('input[name=diagonised_with_covid]');
+    diagonised_with_covid.attr('disabled', 'disabled');
+    var diagonised_further_detail = jQuery('textarea[name=diagonised_further_detail]');
+    diagonised_further_detail.attr('disabled', 'disabled');
+    var accurate_information = jQuery('input[name=accurate_information]');
+    accurate_information.attr('disabled', 'disabled');
+
+
+    $('textarea').attr("rows","4")
+
+
+    $('#list_personal_details').removeClass('active active_tab1');
+    $('#list_personal_details').addClass('inactive_tab1');
+    $('#list_health_details').removeClass('inactive_tab1');
+    $('#list_health_details').addClass('active_tab1 active');
+    $('#list_health_details').attr('data-toggle', 'tab');
+  
+  });
+  
+  </script>
+{% endblock %}

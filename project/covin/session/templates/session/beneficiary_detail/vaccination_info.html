@@ -1,0 +1,75 @@
+{% extends "session/beneficiary_detail.html" %}
+{% load crispy_forms_tags %}
+
+{% block link %}
+<li class="nav-item">
+  <a href="{% url 'personal_info_view' app_id %}" class="nav-link active_tab1" id="list_personal_details" style="border:1px solid #ccc">Personal Details</a>
+</li>
+<li class="nav-item">
+  <a href="{% url 'health_info_view' app_id %}" class="nav-link inactive_tab1" id="list_health_details" style="border:1px solid #ccc">Health Details</a>
+</li>
+<li class="nav-item">
+    <a href="" class="nav-link inactive_tab1" id="list_vaccination_details" style="border:1px solid #ccc">Vaccination Details</a>
+</li>
+{% endblock link %}
+
+
+
+{% block beneficiary_detail %}
+
+    <legend class="border-bottom mb-4">Vaccination Details</legend>
+
+    {% for app in appointment %}
+    <table class="table table-sm table-bordered table_section" id="my-table">
+      <thead>
+        <tr class="table-primary">
+          <th scope="col">Appointment ID</th>
+          <th scope="col">Appointment Date</th>
+          <th scope="col">Appontment Slot</th>
+          <th scope="col">Dose</th>
+          <th scope="col">Status</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody id="table-data">
+        <tr>
+          <td>{{app.appointment_id}}</td>
+          <td>{{app.session_date}}</td>
+          <td>{{app.slot}}</td>
+          <td>{{app.dose}}</td>
+          <td class="text-success">Completed</td>
+          <td><a class="btn btn-sm btn-outline-info" href="">update</a></td>
+        </tr>
+      </tbody>
+    </table>
+    {% endfor %}
+
+    <div align="center"></div>
+    <a href="{% url 'appointment_list_view' %}" name="btn_health_details" id="btn_health_details"
+    class="btn btn-outline-info btn-lg">back to main page</a>
+    </div>
+
+
+  <style>
+  .table_section{
+    margin-bottom: 50px;
+  }
+  </style>
+
+  <script>
+  $(document).ready(function () {
+
+    $('#list_personal_details').removeClass('active active_tab1');
+    $('#list_personal_details').addClass('inactive_tab1');
+
+    $('#list_health_details').removeClass('active active_tab1');
+    $('#list_health_details').addClass('inactive_tab1');
+
+    $('#list_vaccination_details').removeClass('inactive_tab1');
+    $('#list_vaccination_details').addClass('active_tab1 active');
+    $('#list_vaccination_details').attr('data-toggle', 'tab');
+  
+  });
+  </script>
+
+{% endblock %}

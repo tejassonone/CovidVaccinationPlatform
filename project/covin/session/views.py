@@ -2,13 +2,20 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, Http404, JsonResponse
 from appointment.models import Appointment
 from accounts.models import Beneficiary
-import json
-from accounts.forms import RegisterForm
+import json, random
+from django.utils.http import is_safe_url
+from accounts.forms import RegisterForm, PersonalInfoForm, HealthInfoForm
+from appointment.forms import AppointmentForm
 from .forms import VaccinationStatusForm
 from django.db.models import Q
 # Create your views here.
 from django.views.generic import ListView
 
+month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul","Aug", "Sep", "Oct", "Nov", "Dec"]
+day = ["Sun","Mon","Tues","Wed","thurs","Fri","Sat"]
+vaccinated = []
+for i in range(0, 12):
+    vaccinated.append(random.randint(20, 100)) 
 
 def dashboard_view(request):
     appointment =Appointment.objects.all()
@@ -94,6 +101,46 @@ class PendingListView(ListView):
 
 
 
+class MonthChartView(ListView):
+    template_name = 'session/dashboard.html'
+
+    def get_queryset(self):
+        return Appointment.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        qs=Appointment.objects.all()
+        response = [{'month':month[x], 'vaccinated_count':vaccinated[x]} for x in range(0,12)]
+        context["qs"] = response
+        day_qs = [{'day':day[x], 'vaccinated_count':vaccinated[x]} for x in range(0, 7)] 
+        context['day_qs'] =day_qs
+        return context
+
+
+
+def personal_info_view(request, app_id, *args, **kwargs):
+    appointment = Appointment.objects.get(appointment_id=app_id)
+    username = appointment.beneficiary
+    beneficiary = Beneficiary.objects.get(email= username)
+    form1 = PersonalInfoForm(instance=beneficiary)
+    context = {'form1':form1, 'app_id':app_id}   
+    return render(request, 'session/beneficiary_detail/personal_info.html', context)
+
+def health_info_view(request, app_id, *args, **kwargs):
+    appointment = Appointment.objects.get(appointment_id=app_id)
+    username = appointment.beneficiary
+    beneficiary = Beneficiary.objects.get(email= username)
+    form2 = HealthInfoForm(instance=beneficiary)
+    context = {'form2':form2, 'app_id':app_id}   
+    return render(request, 'session/beneficiary_detail/health_info.html', context)
+
+def vaccination_info_view(request, app_id, *args, **kwargs):
+    appointment = Appointment.objects.get(appointment_id=app_id)
+    username = appointment.beneficiary
+    beneficiary = Beneficiary.objects.get(email= username)
+    certificate = beneficiary.appointment_set.all()
+    context={'appointment':certificate, 'app_id':app_id}
+    return render(request, 'session/beneficiary_detail/vaccination_info.html', context)
 
 def vaccination_form_save(request, *args, **kwargs):
     qs = Beneficiary.objects.get(id=7)
