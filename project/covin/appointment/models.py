@@ -9,15 +9,12 @@ class Appointment(models.Model):
     session = models.ForeignKey(Session, null=True, on_delete=models.SET_NULL)
     dose = models.CharField(max_length=2, null=True)
     appointment_id = models.CharField(primary_key=True, max_length=20)
-    session_date = models.CharField(max_length=20, null=True)
+    session_date = models.DateField(auto_now=False)
     slot = models.CharField(max_length=50, null=True)
     timestamp = models.DateTimeField(auto_now_add=True, null=True)
+
+ 
      
 
-@property
-def dose_status(self):
-    if dose1_status =='Not-Sheduled':
-        return '1'
-    else:
-        return '2'
+
         

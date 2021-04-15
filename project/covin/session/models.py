@@ -6,6 +6,6 @@ from vaccine_centre.models import VaccineCentre
 class Session(models.Model):
     centre =models.ForeignKey(VaccineCentre, null=True, on_delete = models.SET_NULL)
     session_id = models.CharField(max_length=6, null=True, unique=True)
-    session_date = models.CharField(max_length=20, null=True)
+    session_date = models.DateField(auto_now=False)
     avalable_capacity =models.CharField(max_length=10, null=True)
     slot = models.CharField(max_length=20, null=True)

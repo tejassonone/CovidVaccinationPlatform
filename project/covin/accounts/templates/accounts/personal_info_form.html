@@ -9,7 +9,7 @@
   {{form1 | crispy}}
 <br />
 <div align="center">
-  <button type="submit" name="btn_personal_details" id="btn_personal_details"
+  <button type="submit" id="btn_personal_details"
     class="next btn btn-outline-info btn-lg">Save</button>
 </div>
 </form>
@@ -18,10 +18,10 @@
 <script>
   $(document).ready(function () {
 
-    var status1 = jQuery('select[name=dose1_status]');
-    status1.attr('disabled', 'disabled');
-    var status2 = jQuery('select[name=dose2_status]');
-    status2.attr('disabled', 'disabled');
+//    var status1 = jQuery('select[name=dose1_status]');
+//    status1.attr('disabled', 'disabled');
+//    var status2 = jQuery('select[name=dose2_status]');
+//    status2.attr('disabled', 'disabled');
 
     $('#list_health_details').removeClass('active active_tab1');
     $('#list_health_details').addClass('inactive_tab1');

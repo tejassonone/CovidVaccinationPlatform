@@ -4,11 +4,11 @@
 
     <div class="row">
         <div class="col-md-10">
-            <h2>Session Status</h2>
+            <legend class="h2">session status</legend>
         </div>
         <div class="col-md-2">
 
-            <div class="date" id="current_date">01-01-2021</div>
+            <input type="date" class="form-control" id="current_date"style="width: 180px;" disabled>
         </div>
     </div>
 
@@ -78,7 +78,7 @@
                             <td>{{row.appointment_id}}</td>
                             <td>{{row.beneficiary.first_name}} {{row.beneficiary.last_name}}</td>
                             <td>{{row.session_date}}</td>
-                            <td><a class="btn btn-info" href="{% url 'vaccination_form' row.appointment_id %}">process</a></td>
+                            <td><a class="btn btn-outline-info" href="{% url 'vaccination_form' row.appointment_id %}">vaccinate</a></td>
                         </tr>
                     {% endfor %}
                     </tbody>
@@ -173,11 +173,11 @@ var yyyy = today.getFullYear();
 
 if(dd<10) dd='0'+dd;
 if(mm<10) mm='0'+mm;
-return (dd+sp+mm+sp+yyyy);
+return (yyyy+sp+mm+sp+dd);
 };
 console.log(curday('/'));
 console.log(curday('-'));
 
-curDate.innerHTML = curday('-')
+curDate.defaultValue = curday('-')
 </script>
 {% endblock %}

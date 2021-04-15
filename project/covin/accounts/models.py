@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import (
-    AbstractBaseUser, BaseUserManager
+    AbstractBaseUser, BaseUserManager, PermissionsMixin
 )
 
 
@@ -39,7 +39,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     email       = models.EmailField(max_length=255, unique=True)
     active      = models.BooleanField(default=True) # can login 
     staff       = models.BooleanField(default=False) # staff user non superuser

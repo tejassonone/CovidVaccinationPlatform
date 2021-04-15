@@ -1,10 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
+{% load crispy_forms_tags %}
+
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
-
+{% for message in messages %}
+<p class="alert alert-danger" id="message">{{message}}</p>
+{% endfor %}
 <div class="card w-200 mb-4" style="width: 1000px;">
   <div class="card-body">
     <h5 class="card-title">{{qs.centre_name}}</h5>
@@ -67,6 +71,9 @@
         <p class="col-md">{{session.avalable_capacity}}</p>
 
 
+       
+        
+
         <form class="col-md" action="" method="POST">
           {% csrf_token %}
           <div class="non_visible">
@@ -99,10 +106,10 @@
             </div>
             <div id="div_id_session_date" class="form-group"> <label for="id_session_date" class=" requiredField">
                 Session date<span class="asteriskField">*</span> </label>
-              <div class=""> <input type="text" name="session_date" maxlength="20"
-                  class="textinput textInput form-control" required id="id_session_date"
-                  value="{{session.session_date}}"> </div>
+              <div class=""> <input type="text" name="session_date" class="dateinput form-control" required
+                  id="id_session_date" value="{{session.session_date | date:'Y-m-d'}}"> </div>
             </div>
+
             <div id="div_id_slot" class="form-group"> <label for="id_slot" class=" requiredField">
                 Slot<span class="asteriskField">*</span> </label>
               <div class=""> <input type="text" name="slot" maxlength="50" class="textinput textInput form-control"
@@ -138,7 +145,7 @@
 
 
 <style>
-  .non_visible {
+.non_visible {
     display: none;
   }
 </style>

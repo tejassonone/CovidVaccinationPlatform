@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
 
@@ -26,7 +26,7 @@ class UserAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
        # ('Full name', {'fields': ()}),
-        ('Permissions', {'fields': ('admin', 'staff', 'active',)}),
+        ('Permissions', {'fields': ('admin', 'staff', 'active', 'groups', 'user_permissions')}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
@@ -40,11 +40,16 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email',)
     filter_horizontal = ()
 
+#-----------------Group stuff-------------#
+#from django.contrib.contenttypes.models import ContentType
+#new_group, created = Group.objects.get_or_create(name='new_group')
+#ct = ContentType.objects.get_for_model(User)
+#permission = Permission.objects.create(content_type=ct)
 
 admin.site.register(User, UserAdmin)
 
 # Remove Group Model from admin. We're not using it.
-admin.site.unregister(Group)
+#admin.site.unregister(Group)
 
 
 
