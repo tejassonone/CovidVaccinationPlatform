@@ -1,48 +1,186 @@
+{% extends "base.html" %}
+
+{% block content %}
 
 {% load static %}
 
 
 
 
-
-<!doctype html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+<!-- Required meta tags --
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 
-    <title>Covid vaccine centre!</title>
-  </head>
-  <body>
-    <h1>Navbar</h1> 
-    <hr>
-   
+------------->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 
-    <div class="container">
-        {% block content %}
-        <h1>Hello, world!</h1>
-        <hr>
-        <h1>Map</h1>
-        <hr>
-        <h1>Vaccine Centre Table</h1>
 
-        {% endblock content %}
+
+<div class="row">
+
+  <div class="row">
+    
+    <div class="centre_section" id="table_section">
+      searched centre reflect here
+      
+  </div>
     </div>
 
-    <!-- Optional JavaScript; choose one of the two! -->
+  <div class="row">
+    <div class="map_section card card-body">
+      <div id="map"></div>
+    </div>
+  </div>
 
-    <!-- Option 1: Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
 
-    <!-- Option 2: Separate Popper and Bootstrap JS -->
-    <!--
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
-    -->
-  </body>
-</html>
+  
+</div>
+
+  
+
+
+
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+        <style type="text/css">
+          /* Always set the map height explicitly to define the size of the div
+           * element that contains the map. */
+          #map {
+            height: 100%;
+          }
+    
+          /* Optional: Makes the sample page fill the window. */
+          html,
+          body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+          }
+        </style>
+        <script>
+          let map;
+
+
+          const myTable = document.getElementById('my-table')
+          const table_section = document.getElementById('table_section')
+
+          function ViewBtn(id){
+        window.location = '/appointment/book_appointment/'+id;
+    }
+
+
+          function initMap() {
+            map = new google.maps.Map(document.getElementById("map"), {
+              center: { lat: -34.397, lng: 150.644 },
+              zoom: 8,
+            });
+
+       // The marker, positioned at
+        const marker = new google.maps.Marker({
+          position:{ lat: -34.397, lng: 150.644 } ,
+          map: map,
+        });
+
+        var infoWindow = new google.maps.InfoWindow({
+          content: '<h1>vaccine centre</h1>'
+        })
+
+        marker.addListener('click', function(){
+          infoWindow.open(map, marker);
+
+          $.ajax({
+            type: 'GET',
+            url: '/appointment/filter_map/',
+            data : {
+                'centre_id':1
+
+          //      'centre_id' : document.getElementById('centre_id').value,
+
+            },
+            
+            success: function (response) {
+                console.log(response)
+                var centreData = response.data
+                centreData.map(items => {
+                    console.log("row",items)
+                   /* var row = "<tr><td>"+items.centre_id+"</td><td>"
+                              +items.centre_name+"</td><td>"
+                              +items.fee_type+
+                            "</td><td><button class='btn btn-outline-info' id='view_btn' onclick=ViewBtn("+items.centre_id+")>view</button></td></tr>"
+                     */
+                     table_section.innerHTML = "<table class='table table-sm table_content table-bordered' id='my-table'><thead><tr><th scope='col'>Centre ID</th><th scope='col'>Centre Name</th><th scope='col'>Fee type</th><th></th></tr></thead><tbody> <tr><td>"+items.centre_id+"</td><td>"+items.centre_name+"</td><td>"+items.fee_type+"</td><td><button class='btn btn-outline-info' id='view_btn' onclick=ViewBtn("+items.centre_id+")>view</button></td></tr></tbody></table>"
+
+                   
+                })
+
+                
+                                    
+                                    },
+            error: function (error) {
+                console.log(error)
+                alertBox.innerHTML = `<div class="alert alert-danger" role="alert">
+                                        Something went wrong.. 
+                                       </div>`
+            }
+        })
+
+        })                                        
+
+  /* 
+        addMarker({ lat: -34.397, lng: 150.644 })
+        addMarker({ lat: -34.8584, lng: 140.7744 })
+        addMarker({ lat: -34.8262, lng: 150.644 })
+
+
+        function addMarker(coords) {
+          var marker = new google.maps.Marker({
+          position:coords ,
+          map: map,
+        });
+          
+                 
+        }
+
+         */
+
+          }
+        </script>
+
+  
+    
+        <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+        <script
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3feMg-Ml2t7mtoUx_WKOFD0STTb0gPMo&callback=initMap&libraries=&v=weekly"
+          async
+        ></script>
+
+
+
+
+
+    <style>
+.map_section{
+  width: 87%;
+  position:absolute;
+margin-top: 80px;
+    height: 84vh;
+    background-color: aliceblue;
+}
+
+.centre_section{
+  margin-top: 10px;
+  width: 100%;
+  height: 30px;
+    background-color: aliceblue;
+}
+
+.non-visible {
+        display: none;
+    }
+    </style>
+
+
+
+
+
+
+
+  {% endblock %}

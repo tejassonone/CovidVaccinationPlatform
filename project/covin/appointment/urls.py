@@ -16,6 +16,7 @@ urlpatterns = [
 
 
 
+    path('filter_map/', views.filter_map_view, name='filter_map'),
 
 
 ]

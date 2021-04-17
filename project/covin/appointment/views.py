@@ -179,3 +179,12 @@ def book_action_view(request):
     return render(request, 'appointment/book_appointment.html', context)
 
 
+
+
+def filter_map_view(request):
+    if request.is_ajax():
+        c_id = request.GET.get('centre_id')
+        print('id----',c_id)
+        qs = list(VaccineCentre.objects.filter(centre_id=c_id).values())
+        return JsonResponse({'data':qs})
+    return JsonResponse({'data':'not dones'})

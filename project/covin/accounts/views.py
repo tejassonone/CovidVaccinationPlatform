@@ -60,8 +60,8 @@ def login_view(request):
     return render(request, "accounts/login.html", context)
 
 
-@allowed_users(allowed_roles=['beneficiary'])
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['beneficiary'])
 def profile(request):
     username = request.user
     qs = Beneficiary.objects.get(email=username)
