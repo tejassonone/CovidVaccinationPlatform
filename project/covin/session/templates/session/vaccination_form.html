@@ -16,8 +16,8 @@
     </thead>
     <tbody>
       <tr>
-        <td colspan="4">{{qs.first_name}}</td>
-        <td>{{qs.last_name}}</td>
+        <td colspan="4">{{beneficiary.first_name}}</td>
+        <td>{{beneficiary.last_name}}</td>
       </tr>
     </tbody>
     <thead>
@@ -28,8 +28,8 @@
     </thead>
     <tbody>
       <tr>
-        <td colspan="4">{{qs.id}}</td>
-        <td>{{qs.email}}</td>
+        <td colspan="4">{{beneficiary.id}}</td>
+        <td>{{beneficiary.email}}</td>
       </tr>
     </tbody>
   </table>
@@ -38,11 +38,26 @@
 
 <div class="container">
     <div class="row">
-      <div class="col-12">
+      <div class="col-12">        
+        
+        <form action="" method="POST">
+        {% csrf_token %}
+
+        <div class="non_visible">
+          <div class=""> <select name="beneficiary" class="select form-control" required id="id_beneficiary">
+            <option value="{{beneficiary.id}}" selected>{{beneficiary}}</option>
+          </select> </div>
+          <div class=""> <select name="session" class="select form-control" required id="id_session">
+            <option value="{{session.id}}" selected>{{session}}</option>
+          </select> </div>
+          <div class=""> <input type="text" name="dose" maxlength="2" class="textinput textInput form-control"
+            required id="id_dose" value="{{dose}}"> </div>
+        </div>
+
         <table class="table table-bordered">
           <thead>
             <tr>
-              <th scope="col" colspan="5">Vaccination Officer 1</th>
+              <th scope="col" colspan="3">Vaccination Officer 1</th>
             </tr>
           </thead>
           <tbody>
@@ -56,41 +71,29 @@
             </tr>
             <tr>
               <tr>
-                <th scope="col" colspan="5">Vaccination Officer 2</th>
+                <th scope="col" colspan="3">Vaccinator</th>
               </tr>
-              <td colspan="4">Creadiantials entered in co-win portal</td>
-              <td>
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck2">
-                </div>
-              </td>
+              <td colspan="3">Vaccine Name</td>
+              <td>{{form2.vaccine_name}}</td>
+
             </tr>
-            <tr>
-              <tr>
-                <th scope="col" colspan="5">Vaccinator</th>
-              </tr>
-              <td colspan="3">Vaccination time</td>
-              <td><input type="text" placeholder="vaccination time(min)"></td>
-              <td>
-                <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="customCheck3">
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <tr>
-                <th scope="col" colspan="5">Vaccination Officer 3</th>
-              </tr>
-                <td colspan="4">Completion of 30min observation period</td>
-                <td>
-                  <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="customCheck2">
-                  </div>
-                </td>
-              </tr>
+
+          </tr>
+          <tr>
+            <td colspan="3">Vaccinated by</td>
+            <td>{{form2.vaccinated_by}}</td>
+          </tr>
+  
+        </tr>
+        <tr>
+          <td colspan="3">Vaccination time</td>
+          <td><input type="text"></td>
+ 
+        </tr>
+
               <tr>
                 <tr>
-                  <th scope="col" colspan="5">Vaccination Officer 4</th>
+                  <th scope="col" colspan="3">Vaccination Officer 2</th>
                 </tr>
                 <td colspan="3">Exit time</td>
                 <td><input type="time" name="" id="" placeholder="exit time"></td>
@@ -102,14 +105,15 @@
               </tr>
           </tbody>
         </table>
-        <form action="" method="POST">
-          {% csrf_token %}
+
           <div style="display: none;">
           {{form.email}}
           {{form.first_name}}
-          <select name="dose1_status" id="">
-              <option value="Sheduled">Vaccinated</option>
+          {% if dose_status %}
+          <select name="{{dose_status}}" id="">
+              <option value="Vaccinated">Vaccinated</option>
           </select>
+          {% endif %}
         </div>
           <button class="btn btn-outline-info" type="submit">Save</button>
       </form>
@@ -119,6 +123,10 @@
 
 
 <style>
+
+.non_visible {
+    display: none;
+  }
 .container {
   padding: 2rem 0rem;
 }
@@ -135,7 +143,26 @@ h4 {
 </style>
 
 
+<script>
 
+  var curDate = document.getElementById('date_of_dose')
+  
+  
+  var curday = function(sp){
+  today = new Date();
+  var dd = today.getDate();
+  var mm = today.getMonth()+1; 
+  var yyyy = today.getFullYear();
+  
+  if(dd<10) dd='0'+dd;
+  if(mm<10) mm='0'+mm;
+  return (yyyy+sp+mm+sp+dd);
+  };
+  console.log(curday('/'));
+  console.log(curday('-'));
+  
+  curDate.defaultValue = curday('-')
+  </script>
 
 
   

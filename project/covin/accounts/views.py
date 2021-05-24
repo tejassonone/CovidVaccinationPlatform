@@ -25,7 +25,7 @@ def register(request, *args, **kwargs):
 
             group = Group.objects.get(name='beneficiary')
             user.groups.add(group)
-            messages.success(request, 'Account was created for' + first_name)
+            messages.success(request, 'Account was created for ' + first_name)
             if is_safe_url(redirect_path, request.get_host()):
                 return redirect(redirect_path)
             else:
@@ -112,6 +112,15 @@ def update_health_info(request):
     return render(request, 'accounts/health_info_form.html', context)
 
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['beneficiary'])
+def certificate_view(request,*args, **kwargs):
+    beneficiary = Beneficiary.objects.get(email=request.user)
+    certificate = beneficiary.certificate_set.all()
+    context ={
+        'certificate':certificate
+    }
+    return render(request, 'accounts/certificate.html', context)
 
 
 

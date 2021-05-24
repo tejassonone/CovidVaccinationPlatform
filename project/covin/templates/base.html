@@ -15,23 +15,24 @@
   <body>
 
     <div class="sidebar card card-body">
-      <a class="btn btn-outline-secondary mb-1" href="{% url 'home' %}">Home</a>
+      <a class="btn custom_btn mb-1" href="{% url 'home' %}">Home</a>
       {% if not request.user.is_active %}
-      <a class="btn btn-outline-secondary mb-1" href="{% url 'register' %}">Registration</a>
-      <a class="btn btn-outline-secondary mb-1" href="{% url 'login' %}">Beneficiary Login</a>
-      <a class="btn btn-outline-secondary mb-1" href="{% url 'admin_login' %}">Admin Login</a>
+      <a class="btn custom_btn mb-1" href="{% url 'register' %}">Registration</a>
+      <a class="btn custom_btn mb-1" href="{% url 'login' %}">Beneficiary Login</a>
+      <a class="btn custom_btn mb-1" href="{% url 'admin_login' %}">Admin Login</a>
       {% endif %}
       {% if request.user.is_active and not request.user.is_admin %}
-      <a class="btn btn-outline-secondary mb-1" href="{% url 'profile' %}">Profile</a>
-      <a class="btn btn-outline-secondary mb-1" href="{% url 'filter_centre' %}">Appointment</a>
-      <a class="btn btn-outline-secondary mb-1" href="{% url 'logout' %}">Log out</a>
+      <a class="btn custom_btn mb-1" href="{% url 'profile' %}">Profile</a>
+      <a class="btn custom_btn mb-1" href="{% url 'filter_centre' %}">Appointment</a>
+      <a class="btn custom_btn mb-1" href="{% url 'certificate_view' %}">Certificate</a>        
+      <a class="btn custom_btn mb-1" href="{% url 'logout' %}">Log out</a>
       {% endif %}
       {% if request.user.is_admin %}
-      <a class="btn btn-outline-secondary mb-1" href="{% url 'dashboard_view' %}">Dashboard</a>
-      <a class="btn btn-outline-secondary mb-1" href="{% url 'session_view' %}">Session</a>
-      <a class="btn btn-outline-secondary mb-1" href="{% url 'logout' %}">Log out</a>
+      <a class="btn custom_btn mb-1" href="{% url 'dashboard_view' %}">Dashboard</a>
+      <a class="btn custom_btn mb-1" href="{% url 'session_view' %}">Session</a>
+      <a class="btn custom_btn mb-1" href="{% url 'logout' %}">Log out</a>
       {% endif %}
-      <a class="btn btn-outline-secondary mb-1" href="{% url 'about' %}">About</a>
+      <a class="btn custom_btn mb-1" href="{% url 'about' %}">About</a>
     </div>
     
     <div class="content">
@@ -85,7 +86,7 @@
 
 
 .custom_btn {
-  border: 2px solid black;
+  border: 2px solid #ccc;
   background-color: white;
   color: black;
   padding: 14px 28px;

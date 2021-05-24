@@ -17,170 +17,495 @@
 
 <div class="row">
 
-  <div class="row">
-    
-    <div class="centre_section" id="table_section">
-      searched centre reflect here
-      
-  </div>
+
+  <div class="container mt-3">
+
+
+    <div class="row non-visible" id="my-centreTable">
+      <div class="slider">
+
+        </div>
+
+        <div class="row">
+          <div class="col-4">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="table-primary">
+                  <th scope="col-8">Centre name</th>
+                </tr>
+              </thead>
+              <tbody id="centre-data">
+
+              </tbody>
+            </table>
+          </div>
+
+          <div class="col-8">
+            <div class="slides">
+              <div id="slide-1">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr class="table-primary" id="week-1-date">
+                    </tr>
+                  </thead>
+                  <tbody id="week-1-session">
+                  </tbody>
+                </table>
+              </div>
+              <div id="slide-2">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr class="table-primary" id="week-2-date">
+                    </tr>
+                  </thead>
+                  <tbody id="week-2-session">
+                  </tbody>
+                </table>
+              </div>
+              <div id="slide-3">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr class="table-primary" id="week-3-date">
+                    </tr>
+                  </thead>
+                  <tbody id="week-3-session">
+                  </tbody>
+                </table>
+              </div>
+              <div id="slide-4">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr class="table-primary" id="week-4-date">
+                    </tr>
+                  </thead>
+                  <tbody id="week-4-session">
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
+
+  </div>
+
+
+
+
+
   <div class="row">
-    <div class="map_section card card-body">
+    <div class="map_section">
       <div id="map"></div>
     </div>
   </div>
 
 
-  
+
 </div>
 
-  
 
 
 
-        <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-        <style type="text/css">
-          /* Always set the map height explicitly to define the size of the div
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<style type="text/css">
+  /* Always set the map height explicitly to define the size of the div
            * element that contains the map. */
-          #map {
-            height: 100%;
-          }
-    
-          /* Optional: Makes the sample page fill the window. */
-          html,
-          body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-          }
-        </style>
-        <script>
-          let map;
+  #map {
+    height: 100%;
+  }
+
+  /* Optional: Makes the sample page fill the window. */
+  html,
+  body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+</style>
+<script>
+  let map;
 
 
-          const myTable = document.getElementById('my-table')
-          const table_section = document.getElementById('table_section')
+  const myTable = document.getElementById('my-table')
+  const table_section = document.getElementById('table_section')
 
-          function ViewBtn(id){
-        window.location = '/appointment/book_appointment/'+id;
-    }
+  function ViewBtn(id) {
+    window.location = '/appointment/book_appointment/' + id;
+  }
 
 
-          function initMap() {
-            map = new google.maps.Map(document.getElementById("map"), {
-              center: { lat: -34.397, lng: 150.644 },
-              zoom: 8,
-            });
+  function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: { lat: -34.397, lng: 150.644 },
+      zoom: 8,
+    });
 
-       // The marker, positioned at
-        const marker = new google.maps.Marker({
-          position:{ lat: -34.397, lng: 150.644 } ,
-          map: map,
-        });
+    // The marker, positioned at
+    const marker = new google.maps.Marker({
+      position: { lat: -34.397, lng: 150.644 },
+      map: map,
+    });
 
-        var infoWindow = new google.maps.InfoWindow({
-          content: '<h1>vaccine centre</h1>'
-        })
+    var infoWindow = new google.maps.InfoWindow({
+      content: '<h1>vaccine centre</h1>'
+    })
 
-        marker.addListener('click', function(){
-          infoWindow.open(map, marker);
+    marker.addListener('click', function () {
+      infoWindow.open(map, marker);
 
-          $.ajax({
-            type: 'GET',
-            url: '/appointment/filter_map/',
-            data : {
-                'centre_id':1
+      const centre_name_data = document.getElementById('centre-data')
+      const week_1_session = document.getElementById('week-1-session')
+      const week_2_session = document.getElementById('week-2-session')
+      const week_3_session = document.getElementById('week-3-session')
+      const week_4_session = document.getElementById('week-4-session')
+
+      const week_1_date = document.getElementById('week-1-date')
+      const week_2_date = document.getElementById('week-2-date')
+      const week_3_date = document.getElementById('week-3-date')
+      const week_4_date = document.getElementById('week-4-date')
+      const mycentreTable = document.getElementById('my-centreTable')
+
+      $.ajax({
+        type: 'GET',
+        url: '/appointment/filter_map/',
+        data: {
+          'centre_id': 2
 
           //      'centre_id' : document.getElementById('centre_id').value,
 
-            },
-            
-            success: function (response) {
-                console.log(response)
-                var centreData = response.data
-                centreData.map(items => {
-                    console.log("row",items)
-                   /* var row = "<tr><td>"+items.centre_id+"</td><td>"
-                              +items.centre_name+"</td><td>"
-                              +items.fee_type+
-                            "</td><td><button class='btn btn-outline-info' id='view_btn' onclick=ViewBtn("+items.centre_id+")>view</button></td></tr>"
-                     */
-                     table_section.innerHTML = "<table class='table table-sm table_content table-bordered' id='my-table'><thead><tr><th scope='col'>Centre ID</th><th scope='col'>Centre Name</th><th scope='col'>Fee type</th><th></th></tr></thead><tbody> <tr><td>"+items.centre_id+"</td><td>"+items.centre_name+"</td><td>"+items.fee_type+"</td><td><button class='btn btn-outline-info' id='view_btn' onclick=ViewBtn("+items.centre_id+")>view</button></td></tr></tbody></table>"
+        },
 
-                   
-                })
+        success: function (response) {
+          console.log(response)
+          var centreData = response.data
+          mycentreTable.classList.remove('non-visible')
+          centreData.map(items => {
+            console.log("row", items)
+            /* var row = "<tr><td>"+items.centre_id+"</td><td>"
+                       +items.centre_name+"</td><td>"
+                       +items.fee_type+
+                     "</td><td><button class='btn btn-outline-info' id='view_btn' onclick=ViewBtn("+items.centre_id+")>view</button></td></tr>"
+              
+              table_section.innerHTML = "<table class='table table-sm table_content table-bordered' id='my-table'><thead><tr><th scope='col'>Centre ID</th><th scope='col'>Centre Name</th><th scope='col'>Fee type</th><th></th></tr></thead><tbody> <tr><td>"+items.centre_id+"</td><td>"+items.centre_name+"</td><td>"+items.fee_type+"</td><td><button class='btn btn-outline-info' id='view_btn' onclick=ViewBtn("+items.centre_id+")>view</button></td></tr></tbody></table>"
+              */
 
-                
-                                    
-                                    },
-            error: function (error) {
-                console.log(error)
-                alertBox.innerHTML = `<div class="alert alert-danger" role="alert">
+
+            var centreName = "<tr><td>" + items.centre_name + "</td></tr>"
+            var week1date = ""
+            var week2date = ""
+            var week3date = ""
+            var week4date = ""
+
+            for (var i = 0; i < 7; i++) {
+              row = "<th scope='col'>" + items.session[i].date + "</th>"
+              week1date += row
+            }
+            week_1_date.innerHTML = week1date
+
+            for (var i = 7; i < 14; i++) {
+              row = "<th scope='col'>" + items.session[i].date + "</th>"
+              week2date += row
+            }
+            week_2_date.innerHTML = week2date
+
+            for (var i = 14; i < 21; i++) {
+              row = "<th scope='col'>" + items.session[i].date + "</th>"
+              week3date += row
+            }
+            week_3_date.innerHTML = week3date
+
+            for (var i = 21; i < 28; i++) {
+              row = "<th scope='col'>" + items.session[i].date + "</th>"
+              week4date += row
+            }
+            week_4_date.innerHTML = week4date
+
+            var week1session = ""
+            var week2session = ""
+            var week3session = ""
+            var week4session = ""
+
+
+
+
+            for (var i = 0; i < 7; i++) {
+              if (items.session[i].v_count != 0 && items.session[i].action == 'Book') {
+                row = "<td><button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#exampleModal' onclick=selectSession(" + items.session[i].session_id + ")>" + items.session[i].action + "</button></td>"
+              } else if (items.session[i].v_count != 0 && items.session[i].action == 'Booked') {
+                row = "<td><button type='button' class='btn btn-secondary'>" + items.session[i].action + "</button></td>"
+              } else {
+                row = "<td>NA</td>"
+              }
+              week1session += row
+            }
+            for (var i = 7; i < 14; i++) {
+              if (items.session[i].v_count != 0 && items.session[i].action == 'Book') {
+                row = "<td><button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#exampleModal' onclick=selectSession(" + items.session[i].session_id + ")>" + items.session[i].action + "</button></td>"
+              } else if (items.session[i].v_count != 0 && items.session[i].action == 'Booked') {
+                row = "<td><button type='button' class='btn btn-secondary'>" + items.session[i].action + "</button></td>"
+              } else {
+                row = "<td>NA</td>"
+              }
+              week2session += row
+            }
+            for (var i = 14; i < 21; i++) {
+              if (items.session[i].v_count != 0 && items.session[i].action == 'Book') {
+                row = "<td><button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#exampleModal' onclick=selectSession(" + items.session[i].session_id + ")>" + items.session[i].action + "</button></td>"
+              } else if (items.session[i].v_count != 0 && items.session[i].action == 'Booked') {
+                row = "<td><button type='button' class='btn btn-secondary'>" + items.session[i].action + "</button></td>"
+              } else {
+                row = "<td>NA</td>"
+              }
+              week3session += row
+            }
+            for (var i = 21; i < 28; i++) {
+              if (items.session[i].v_count != 0 && items.session[i].action == 'Book') {
+                row = "<td><button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#exampleModal' onclick=selectSession(" + items.session[i].session_id + ")>" + items.session[i].action + "</button></td>"
+              } else if (items.session[i].v_count != 0 && items.session[i].action == 'Booked') {
+                row = "<td><button type='button' class='btn btn-secondary'>" + items.session[i].action + "</button></td>"
+              } else {
+                row = "<td>NA</td>"
+              }
+              week4session += row
+            }
+
+            week_1_session.innerHTML += "<tr>" + week1session + "</tr>"
+            week_2_session.innerHTML += "<tr>" + week2session + "</tr>"
+            week_3_session.innerHTML += "<tr>" + week3session + "</tr>"
+            week_4_session.innerHTML += "<tr>" + week4session + "</tr>"
+
+            centre_name_data.innerHTML += centreName
+
+
+
+          })
+
+
+
+        },
+        error: function (error) {
+          console.log(error)
+          alertBox.innerHTML = `<div class="alert alert-danger" role="alert">
                                         Something went wrong.. 
                                        </div>`
-            }
-        })
-
-        })                                        
-
-  /* 
-        addMarker({ lat: -34.397, lng: 150.644 })
-        addMarker({ lat: -34.8584, lng: 140.7744 })
-        addMarker({ lat: -34.8262, lng: 150.644 })
-
-
-        function addMarker(coords) {
-          var marker = new google.maps.Marker({
-          position:coords ,
-          map: map,
-        });
-          
-                 
         }
+      })
 
-         */
+    })
 
+    /* 
+          addMarker({ lat: -34.397, lng: 150.644 })
+          addMarker({ lat: -34.8584, lng: 140.7744 })
+          addMarker({ lat: -34.8262, lng: 150.644 })
+  
+  
+          function addMarker(coords) {
+            var marker = new google.maps.Marker({
+            position:coords ,
+            map: map,
+          });
+            
+                   
           }
-        </script>
+  
+           */
+
+  }
+
+
+
 
   
-    
-        <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
-        <script
-          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3feMg-Ml2t7mtoUx_WKOFD0STTb0gPMo&callback=initMap&libraries=&v=weekly"
-          async
-        ></script>
+  function selectSession(s_id) {
+    console.log('session')
+
+    const model_name = document.getElementById('exampleModalLabel')
+    const model_body = document.getElementById('modelbody')
+    const appointment_button = document.getElementById('appointment_btn')
+
+    $.ajax({
+      type: 'GET',
+      url: `/appointment/centre-detail/${s_id}/`,
+      success: function (response) {
+        console.log(response.data)
+        server_data = response.data
+
+
+
+        server_data.map(items => {
+          model_name.innerHTML = "<h5>" + items.centre_name + ", " + "</h5><h5>" + items.block + "</h5>"
+          model_body.innerHTML = "<div class='row'><h5 class='col-6 col-md'>Session ID</h5><p class='col-6 col-md'>" + items.session_id
+            + "</p></div><div class='row'><h5 class='col-6 col-md'>Slot</h5><p class='col-6 col-md'>" + items.session_date
+            + "</p></div><div class='row'><h5 class='col-6 col-md'>Session date</h5><p class='col-6 col-md'>" + items.slot
+            + "</p></div>"
+
+          appointment_button.innerHTML = "<button type='button' class='btn btn-primary' data-bs-dismiss='modal' onclick=createAppointment(" + items.session_id + ")>Book Appointment</button>"
+        })
+      },
+      error: function (error) {
+        console.log(error)
+      }
+    })
+  }
 
 
 
 
 
-    <style>
-.map_section{
-  width: 87%;
-  position:absolute;
-margin-top: 80px;
-    height: 84vh;
+  function createAppointment(s_id) {
+    $.ajax({
+      type: 'GET',
+      url: `/appointment/create_appointment/${s_id}`,
+      data: {
+        'action': 'book'
+      },
+      success: function (response) {
+        console.log(response)
+
+      },
+      error: function (error) {
+        console.log(error)
+      }
+    })
+  }
+</script>
+
+
+
+<!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+<script
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD3feMg-Ml2t7mtoUx_WKOFD0STTb0gPMo&callback=initMap&libraries=&v=weekly"
+  async></script>
+
+
+
+
+
+<style>
+  .map_section {
+    position: fixed;
+    width: 87%;
+    position: absolute;
+    height: 80vh;
     background-color: aliceblue;
-}
+  }
 
-.centre_section{
-  margin-top: 10px;
-  width: 100%;
-  height: 30px;
+  .centre_section {
+    margin-top: 10px;
+    width: 100%;
     background-color: aliceblue;
-}
+  }
 
-.non-visible {
-        display: none;
+  .non-visible {
+    display: none;
+  }
+</style>
+
+
+
+<style>
+  .slider {
+    width: 1800px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .slider .link_section {
+    text-align: end;
+    margin: 0.5rem 3.5rem 0.5rem 0;
+    text-decoration: none;
+  }
+
+  .slides {
+    display: flex;
+
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+
+
+
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+
+    /*
+    scroll-snap-points-x: repeat(300px);
+    scroll-snap-type: mandatory;
+    */
+  }
+
+  .slides::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+    margin-left: 80px;
+  }
+
+
+
+  .slides::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .slides>div {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    width: 800px;
+    height: 100px;
+    margin-right: 50px;
+    border-radius: 10px;
+    transform-origin: center center;
+    transform: scale(1);
+    transition: transform 0.5s;
+    position: relative;
+
+    display: flex;
+
+
+  }
+
+  .slides>div:target {
+    /*   transform: scale(0.8); */
+  }
+
+  .author-info {
+    background: rgba(0, 0, 0, 0.75);
+    color: white;
+
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    margin: 0;
+  }
+
+  .author-info a {
+    color: white;
+  }
+
+
+
+
+
+  .slider>a:active {
+    top: 1px;
+  }
+
+  .slider>a:focus {
+    background: #000;
+  }
+
+  /* Don't need button navigation */
+  @supports (scroll-snap-type) {
+    .slider>a {
+      display: none;
     }
-    </style>
+  }
+</style>
 
 
 
 
-
-
-
-  {% endblock %}
+{% endblock %}

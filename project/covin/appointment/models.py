@@ -13,6 +13,7 @@ class Appointment(models.Model):
     slot = models.CharField(max_length=50, null=True)
     timestamp = models.DateTimeField(auto_now_add=True, null=True)
 
+
  
      
 

@@ -4,8 +4,6 @@ from . import views
 urlpatterns = [
     path('dash', views.dashboard_view, name='dash'),
     path('vaccination_form/<str:pk>/', views.vaccination_form_view, name='vaccination_form'),
-    path('vaccination_form_save/', views.vaccination_form_save, name='vaccination_form_save'),
-    path('form_save/', views.form_save, name='form_save'),
     path('session_view/', views.session_view, name='session_view'),
 
 

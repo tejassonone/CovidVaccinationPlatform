@@ -10,11 +10,12 @@ urlpatterns = [
     path('block-json/<str:state>/<str:district>/', views.get_json_block_data, name='block-json'),
     path('block-json/<str:state>/<str:district>/<str:block>/', views.get_json_pincode_data, name='pincode-json'),
     path('search/', views.filter_view, name='search'),
+    path('centre-detail/<str:s_id>/', views.centre_detail, name='centre-detail'),
     path('book_appointment_view/', views.book_action_view, name='book_appointment_view'),
     path('booked_appointment/', views.booked_appointment, name='booked_appointment'),
     path('delete_appointment/<int:id>/', views.delete_appointment, name='delete_appointment'),
 
-
+    path('create_appointment/<str:s_id>/', views.create_appointment_view, name='create_appointment_view'),
 
     path('filter_map/', views.filter_map_view, name='filter_map'),
 

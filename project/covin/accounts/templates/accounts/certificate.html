@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container status_section">
+  <div class="card card-body">
+    <legend class="border-bottom mb-4">Certificate</legend>
+
+    <table class="table table-sm table-bordered" id="my-table">
+      <thead>
+        <tr class="table-primary">
+          <th scope="col">ID</th>
+          <th scope="col">Vaccination Date</th>
+          <th scope="col">Vaccine Name</th>
+          <th scope="col">Dose</th>
+        </tr>
+      </thead>
+      <tbody id="table-data">
+        {% for cer in certificate %}
+        <tr>
+          <td>{{cer.id}}</td>
+          <td>{{cer.date_of_dose}}</td>
+          <td>{{cer.vaccine_name}}</td>
+          <td>{{cer.dose}}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+
+  </div>
+</div>
+
+
+
+<style>
+  .status_section {
+    width: 1100px;
+    margin: 30px auto;
+
+  }
+</style>
+
+{% endblock %}

@@ -9,7 +9,7 @@ from .models import Session
 from django.utils.http import is_safe_url
 from accounts.forms import RegisterForm, PersonalInfoForm, HealthInfoForm
 from appointment.forms import AppointmentForm
-from .forms import VaccinationStatusForm
+from .forms import VaccinationStatusForm, CertificateForm
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required, permission_required
 from accounts.decorators import allowed_users
@@ -48,19 +48,33 @@ def dashboard_view(request):
 
 def vaccination_form_view(request, pk, *args, **kwargs):
     appointment = Appointment.objects.get(appointment_id=pk)
-    qs = Beneficiary.objects.get(id=appointment.beneficiary.id)
-    form=VaccinationStatusForm(instance=qs)
+    s_id = appointment.session_id
+    session = Session.objects.get(session_id=s_id)
+    beneficiary = Beneficiary.objects.get(id=appointment.beneficiary.id)
+    form1=VaccinationStatusForm(instance=beneficiary)
+    form2 = CertificateForm()
+    dose = appointment.dose
+    if dose == '1':
+        dose_status = 'dose1_status'
+    else:
+        dose_status = 'dose2_status'
     if request.method == 'POST':
-        form=VaccinationStatusForm(data=request.POST, instance=qs)
-        print('form save------',request.POST)
-        if form.is_valid():
-            form.save()
+        form1=VaccinationStatusForm(data=request.POST, instance=beneficiary)
+        form2=CertificateForm(data=request.POST)
+        if form1.is_valid() and form2.is_valid():
+            form1.save()
+            form2.save()
             return redirect('session_view')
     context = {
-        'form':form,
-        "qs": qs
+        'form':form1,
+        'form2':form2,
+        "beneficiary": beneficiary,
+        "session":session,
+        "dose":dose,
+        "dose_status":dose_status
     }
     return render(request, "session/vaccination_form.html", context, status=200)
+
 
 
 @login_required(login_url='admin_login')
@@ -207,24 +221,10 @@ def vaccination_info_view(request, app_id, *args, **kwargs):
     context={'appointment':certificate, 'app_id':app_id}
     return render(request, 'session/beneficiary_detail/vaccination_info.html', context)
 
-@login_required(login_url='admin_login')
-@allowed_users(allowed_roles=['admin'])
-def vaccination_form_save(request, *args, **kwargs):
-    qs = Beneficiary.objects.get(id=7)
-    form=RegisterForm(initial={'Beneficiary':qs})
-    return render(request, "session/form_save.html", {'form':form}, status=200)
 
 
 
-def form_save(request, *args, **kwargs):
-    qs = Beneficiary.objects.get(id=7)
-    form=VaccinationStatusForm(instance=qs)
-    if request.method == 'POST':
-        form=VaccinationStatusForm(data=request.POST, instance=qs)
-        if form.is_valid():
-            form.save()
-            return redirect('session_view')
-    return render(request, "session/form_save.html", {'form':form}, status=200)
+
 
 
 

@@ -11,6 +11,9 @@ urlpatterns = [
     path('is_email_already_exist/', views.is_email_already_exist, name='is_email_already_exist'),
     path('update_personal_info/', views.update_personal_info, name='update_personal_info'),
     path('update_health_info/', views.update_health_info, name='update_health_info'),
+
+    path('certificate/', views.certificate_view, name='certificate_view'),
+
     path('about/', views.about, name='about'),
 
     path('register1/', views.register1, name='register1'),
